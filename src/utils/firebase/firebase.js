@@ -4,7 +4,7 @@ import { getAuth,
         signInWithPopup,
         createUserWithEmailAndPassword,
         signInWithEmailAndPassword,
-        deleteUser
+        deleteUser,signOut
         } from "firebase/auth";
 import { getFirestore,doc,getDoc,setDoc } from "firebase/firestore";
 
@@ -14,7 +14,8 @@ const firebaseConfig = {
   projectId: "password-manager-c43f1",
   storageBucket: "password-manager-c43f1.firebasestorage.app",
   messagingSenderId: "809579922118",
-  appId: "1:809579922118:web:26728ff1ffd02718648dc7"
+  appId: "1:809579922118:web:26728ff1ffd02718648dc7",   
+
 };
 
 const app = initializeApp(firebaseConfig);
@@ -56,7 +57,6 @@ export const createUserFromEmailAndPassword =async(email,password,name)=>{
           }
         }
       console.error('error while creating user with email and password',e)
-      return 3;
   }
 }
 
@@ -69,4 +69,11 @@ export const signInUserWithEmailAndPassword =async(email,password)=>{
       }
       console.error('error while signing user with email and password',e)
   }
+}
+export const signOutUser=async()=>{
+    try{
+        await signOut(auth);
+    }catch(e){
+        console.error('error signing out user',e);
+    }
 }

@@ -6,6 +6,7 @@ import { FaBullseye } from "react-icons/fa";
 import SubmitButton from '../../components/submit-button/submit-button.component';
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
 import { createUserFromEmailAndPassword } from '../../utils/firebase/firebase';
+import { useNavigate } from 'react-router-dom';
 const defaultFormFields = {
     displayName: '',
     email: '',
@@ -18,7 +19,8 @@ const CreateUser = () => {
       const [formFields, setFormFields] = useState(defaultFormFields);
       const { displayName, email, password, confirmPassword } = formFields;
       const [passType,setPassType]=useState('password');
-      const [isUserCreated,setIsUserCreated]=useState(false);
+      const [isLoading,setIsLoading]=useState(false);
+      const router = useNavigate();
 
       const resetFormFields = () => {
         setFormFields(defaultFormFields);
@@ -30,15 +32,16 @@ const CreateUser = () => {
           alert('passwords do not match');
           return;
         }
-        console.log(formFields)
-        try {
+        setIsLoading(true);
+        try{
+        await createUserFromEmailAndPassword(formFields.email,formFields.password,formFields.displayName)
+        setIsLoading(false)
+        resetFormFields()
+        router('/dashboard')
+        }catch(e){
+          console.error(e)
           resetFormFields();
-        } catch (error) {
-          if (error.code === 'auth/email-already-in-use') {
-            alert('Cannot create user, email already in use');
-          } else {
-            console.log('user creation encountered an error', error);
-          }
+          setIsLoading(false);
         }
       };
     
@@ -79,14 +82,14 @@ const CreateUser = () => {
                   <input placeholder='Display Name' type='text' required onChange={handleChange} name='displayName' value={displayName} className='c-input' spellCheck={false} />
                   <input placeholder='Email' type='email' required onChange={handleChange} name='email' value={email} className='c-input' />
                   <div className='pass' >
-                  <input placeholder='Password' minLength={4} type={passType} required onChange={handleChange} name='password' value={password} className='c-input' />
+                  <input placeholder='Password' minLength={6} type={passType} required onChange={handleChange} name='password' value={password} className='c-input' />
                   <FaBullseye className='eye' onClick={handlePassType} />
                   </div>
                   <div className='pass'>
-                  <input placeholder='Confirm Password' minLength={4} type={passType} required onChange={handleChange} name='confirmPassword' value={confirmPassword} className='c-input' />
+                  <input placeholder='Confirm Password' minLength={6} type={passType} required onChange={handleChange} name='confirmPassword' value={confirmPassword} className='c-input' />
                   <FaBullseye className='eye' onClick={handlePassType} />
                   </div>
-                  <SubmitButton text={'Sign Up'} state={isUserCreated} size={"28px"} />
+                  <SubmitButton text={'Sign Up'} state={isLoading} size={"28px"} />
               </form>
                 <div className='g-sign'>
                 <button onClick={signInWithGooglePopup}><FcGoogle className='svg' /> Sign In with Google</button>
