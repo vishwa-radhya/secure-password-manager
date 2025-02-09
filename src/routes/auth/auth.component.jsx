@@ -6,7 +6,6 @@ import SubmitButton from '../../components/submit-button/submit-button.component
 import { FcGoogle } from "react-icons/fc";
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
 import { signInUserWithEmailAndPassword } from '../../utils/firebase/firebase';
-import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useNavigate } from 'react-router-dom';
 
 const defaultFormFields = {
@@ -21,15 +20,10 @@ const Auth = () => {
     const [passType,setPassType]=useState('password');
     const [isLoading,setIsLoading]=useState(false);
     const router = useNavigate();
-    const { user } = useUserAuthContext();
 
     const resetFormFields = () => {
         setFormFields(defaultFormFields);
     };
-    // useEffect(() => {
-    //   console.log('hit')
-    //   if (user) router("/");
-    // }, [user, router]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();

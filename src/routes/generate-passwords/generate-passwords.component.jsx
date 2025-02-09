@@ -2,7 +2,7 @@ import './generate-passwords.styles.scss';
 import { useState } from 'react';
 import GenSignificantPass from '../../components/gen-significant-pass/gen-significant-pass.component';
 import GenRandomPass from '../../components/gen-random-pass/gen-random-pass.component';
-import { FaRegCopy } from "react-icons/fa6";
+import { FaRegCopy,FaCheck } from "react-icons/fa6";
 import { FiRefreshCw } from "react-icons/fi";
 
 const GeneratePasswords = () => {
@@ -33,7 +33,7 @@ const GeneratePasswords = () => {
                     </div>
                     <div className='copy-reset'>
                         <div className='copy' onClick={handleCopyClick}>
-                            <FaRegCopy/>{!isCopied ? "Copy to clipboard" : "Success"} 
+                            {!isCopied ? <FaRegCopy/> : <FaCheck/>} Copy to clipboard 
                         </div>
                         <div className='reset' onClick={()=>setDisplayPassword('Password')}>
                             <FiRefreshCw/>
@@ -46,7 +46,7 @@ const GeneratePasswords = () => {
                         <div style={switch2Styles} onClick={()=>setIsSwitched(false)} >Random</div>
                     </div>
                     <div className='components'>
-                        {isSwitched ? <GenSignificantPass/> : <GenRandomPass setDisplayPassword={setDisplayPassword} />}
+                        {isSwitched ? <GenSignificantPass setDisplayPassword={setDisplayPassword} /> : <GenRandomPass setDisplayPassword={setDisplayPassword} />}
                     </div>
                 </div>
             </div>
