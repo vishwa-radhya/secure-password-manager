@@ -41,7 +41,9 @@ const Menubar = () => {
                     <FaUserAstronaut/>
                 </div>
             </div>
+            <div className='container'>
             <Outlet/>
+            </div>
         </Fragment>
      );
 }

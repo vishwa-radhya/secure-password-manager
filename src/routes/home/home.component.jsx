@@ -5,12 +5,14 @@ import { FaChevronRight,FaKey } from "react-icons/fa6";
 import { RiAiGenerate,RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineAssessment,MdCategory  } from "react-icons/md";
 import { CgDatabase } from "react-icons/cg";
+import { useNavigate } from 'react-router-dom';
 
 const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords'];
 const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
 
 const Home = () => {
     const {user}=useUserAuthContext(); 
+    const router = useNavigate();
 
     return ( 
         <div className='home-div'>
@@ -21,7 +23,7 @@ const Home = () => {
             </div>
             <div className='main'>
                 <div className='parent'>
-                <div>
+                <div onClick={()=>router('overview')}>
                     <div className='head-next'>
                         <p>Overview</p>
                         <FaChevronRight/>
@@ -37,7 +39,7 @@ const Home = () => {
                     </div>
                     </div>
                 </div>
-                <div>
+                <div onClick={()=>router('password-health')}>
                 <div className='head-next'>
                         <p>Password Health</p>
                         <FaChevronRight/>
@@ -51,7 +53,7 @@ const Home = () => {
                 </div>
                 <div className='blocks'>
                 {iconArray.map((Icon,index)=>{
-                    return <div key={`app-tile-spm-${index}`}>
+                    return <div key={`app-tile-spm-${index}`} onClick={()=>router(`${nameArray[index].replace(/\s/g,'-').toLowerCase()}`)}>
                         <div>
                             <Icon className='icon' />
                         </div>
