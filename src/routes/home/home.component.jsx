@@ -6,7 +6,7 @@ import { RiAiGenerate,RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineAssessment,MdCategory  } from "react-icons/md";
 import { CgDatabase } from "react-icons/cg";
 
-const nameArray=['Generate passwords','Check password strength','Your passwords','Add passwords'];
+const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords'];
 const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
 
 const Home = () => {
@@ -17,7 +17,7 @@ const Home = () => {
             <div className='header'>
                 <p>Welcome back,</p>
                 <img src={userPic} />
-                <h1>Figerland shanks</h1>
+                <h1>{"Figerland shanks"}</h1>
             </div>
             <div className='main'>
                 <div className='parent'>
