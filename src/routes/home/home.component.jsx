@@ -23,7 +23,7 @@ const Home = () => {
             </div>
             <div className='main'>
                 <div className='parent'>
-                <div onClick={()=>router('overview')}>
+                <div onClick={()=>router('overview')} className='bs'>
                     <div className='head-next'>
                         <p>Overview</p>
                         <FaChevronRight/>
@@ -39,7 +39,7 @@ const Home = () => {
                     </div>
                     </div>
                 </div>
-                <div onClick={()=>router('password-health')}>
+                <div onClick={()=>router('password-health')} className='bs'>
                 <div className='head-next'>
                         <p>Password Health</p>
                         <FaChevronRight/>
@@ -53,7 +53,7 @@ const Home = () => {
                 </div>
                 <div className='blocks'>
                 {iconArray.map((Icon,index)=>{
-                    return <div key={`app-tile-spm-${index}`} onClick={()=>router(`${nameArray[index].replace(/\s/g,'-').toLowerCase()}`)}>
+                    return <div key={`app-tile-spm-${index}`} className='bs' onClick={()=>router(`${nameArray[index].replace(/\s/g,'-').toLowerCase()}`)}>
                         <div>
                             <Icon className='icon' />
                         </div>

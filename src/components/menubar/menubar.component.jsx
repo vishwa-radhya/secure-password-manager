@@ -37,7 +37,7 @@ const Menubar = () => {
                         </div>
                     })}
                 </div>
-                <div className='user-pic' onClick={()=>router('user')}>
+                <div className='user-pic' >
                     <FaUserAstronaut/>
                 </div>
             </div>
