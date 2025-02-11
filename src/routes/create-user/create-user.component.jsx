@@ -79,14 +79,14 @@ const CreateUser = () => {
                     <p>Sign up with your email and password</p>
                 </div>
                 <form onSubmit={handleSubmit}>
-                  <input placeholder='Display Name' type='text' required onChange={handleChange} name='displayName' value={displayName} className='c-input' spellCheck={false} />
-                  <input placeholder='Email' type='email' required onChange={handleChange} name='email' value={email} className='c-input' />
+                  <input placeholder='Display Name' type='text' required onChange={handleChange} name='displayName' value={displayName} className='c-input' spellCheck={false} maxLength={70} />
+                  <input placeholder='Email' type='email' required maxLength={100} onChange={handleChange} name='email'  value={email} className='c-input' />
                   <div className='pass' >
-                  <input placeholder='Password' minLength={6} type={passType} required onChange={handleChange} name='password' value={password} className='c-input' />
+                  <input placeholder='Password' minLength={6} type={passType} required onChange={handleChange} name='password' value={password} className='c-input' maxLength={100} />
                   <FaBullseye className='eye' onClick={handlePassType} />
                   </div>
                   <div className='pass'>
-                  <input placeholder='Confirm Password' minLength={6} type={passType} required onChange={handleChange} name='confirmPassword' value={confirmPassword} className='c-input' />
+                  <input placeholder='Confirm Password' minLength={6} type={passType} required onChange={handleChange} name='confirmPassword' value={confirmPassword} className='c-input' maxLength={100} />
                   <FaBullseye className='eye' onClick={handlePassType} />
                   </div>
                   <SubmitButton text={'Sign Up'} state={isLoading} size={"28px"} />

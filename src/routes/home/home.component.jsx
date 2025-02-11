@@ -13,13 +13,13 @@ const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase]
 const Home = () => {
     const {user}=useUserAuthContext(); 
     const router = useNavigate();
-
+    
     return ( 
         <div className='home-div'>
             <div className='header'>
                 <p>Welcome back,</p>
                 <img src={userPic} />
-                <h1>{"Figerland shanks"}</h1>
+                <h1>{user?.displayName ?? "Figerland shanks"}</h1>
             </div>
             <div className='main'>
                 <div className='parent'>

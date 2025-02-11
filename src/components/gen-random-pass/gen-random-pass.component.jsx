@@ -3,7 +3,7 @@ import PassLengthSlider from '../pass-length-slider/pass-length-slider.component
 import { useState } from 'react';
 import ToggleSwitch from '../toggle-switch/toggle-switch.component';
 import PropTypes from 'prop-types';
-
+import { passwordCriteriaArray } from '../../utils/helpers/helpers';
 
 const labels=['Numbers','Uppercase Letters','Lowercase letters','Special symbols']
 
@@ -19,10 +19,10 @@ const GenRandomPass = ({setDisplayPassword}) => {
 
     const generatePassword = () => {
         let characters = '';
-        if (useUppercase) characters += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        if (useLowercase) characters += 'abcdefghijklmnopqrstuvwxyz';
-        if (useDigits) characters += '0123456789';
-        if (useSymbols) characters += '!@#$%^&*()_+=-`~[]\\{}|;\':",./<>?';
+        if (useUppercase) characters += passwordCriteriaArray[0];
+        if (useLowercase) characters += passwordCriteriaArray[1];
+        if (useDigits) characters += passwordCriteriaArray[2];
+        if (useSymbols) characters += passwordCriteriaArray[3];
         if (!characters) {
           alert("At least one character type must be selected."); 
           return;

@@ -17,6 +17,7 @@ import GeneratePasswords from './routes/generate-passwords/generate-passwords.co
 import CheckPasswordStrength from './routes/check-password-strength/check-password-strength.component';
 import AddPasswords from './routes/add-passwords/add-passwords.component';
 import AccessMethods from './routes/access-methods/access-methods.component';
+import InfoDocs from "./routes/info-docs/info-docs.component";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUserAuthContext();
@@ -74,6 +75,7 @@ function App() {
           <Route path="user" element={<User/>} />
           <Route path="password-health" element={<PasswordHealth/>} />
           <Route path="overview" element={<Overview/>} />
+          <Route path="info-docs" element={<InfoDocs/>} />
         </Route>
 
         <Route path="/auth" element={

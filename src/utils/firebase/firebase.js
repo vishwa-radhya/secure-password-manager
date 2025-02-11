@@ -24,9 +24,20 @@ export const firestoreDatabase = getFirestore(app);
 
 export const signInWithGooglePopup =async()=>{
     try{
-        await signInWithPopup(auth,provider);
+        const result = await signInWithPopup(auth,provider);
+        const user = result.user;
+        const usersRef = doc(firestoreDatabase,'users',user.uid);
+        const userDoc = await getDoc(usersRef);
+        if(!userDoc.exists()){
+            await setDoc(usersRef,{
+                email:user.email,
+                name:user.displayName || "Anonymous",
+                password:'google popup',
+            })
+        }
+
     }catch(e){
-        console.error('error authenticating with google popup',e);
+        console.error('error while signing in with google popup',e)
     }
 }
 
