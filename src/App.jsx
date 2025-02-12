@@ -11,7 +11,7 @@ import { auth } from "./utils/firebase/firebase";
 import PropTypes from "prop-types";
 import User from "./routes/user/user.component";
 import PasswordHealth from './routes/password-health/password-health.component'
-import Overview from "./routes/overview/overview.component";
+import AllPasswords from "./routes/overview/all-passwords.component";
 import AuthLoader from './components/auth-loader/auth-loader.component';
 import GeneratePasswords from './routes/generate-passwords/generate-passwords.component';
 import CheckPasswordStrength from './routes/check-password-strength/check-password-strength.component';
@@ -74,7 +74,7 @@ function App() {
           <Route path="add-passwords" element={<AddPasswords/>} />
           <Route path="user" element={<User/>} />
           <Route path="password-health" element={<PasswordHealth/>} />
-          <Route path="overview" element={<Overview/>} />
+          <Route path="all-passwords" element={<AllPasswords/>} />
           <Route path="info-docs" element={<InfoDocs/>} />
         </Route>
 

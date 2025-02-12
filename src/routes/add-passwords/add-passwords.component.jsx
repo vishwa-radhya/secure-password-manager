@@ -36,7 +36,7 @@ const AddPasswords = () => {
                 <div className='interface'>
                 <h3>Enter your details</h3>
                     <form onSubmit={handleSubmit}>
-                        <input className='c-input' placeholder='Username' maxLength={80} value={inputUsername} onChange={(e)=>setInputUsername(e.target.value)}  />
+                        <input className='c-input' placeholder='Username or email' required maxLength={80} value={inputUsername} onChange={(e)=>setInputUsername(e.target.value)}  />
                         <div className='pass'>
                         <input className='c-input' placeholder='Password' maxLength={100} type={passType} required value={inputPassword} onChange={(e)=>setInputPassword(e.target.value)} />
                         <FaBullseye className='eye' onClick={handlePassType}  />

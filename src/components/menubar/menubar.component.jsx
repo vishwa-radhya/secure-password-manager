@@ -2,15 +2,15 @@ import { Fragment, useState } from 'react';
 import './menubar.styles.scss';
 import { Outlet } from 'react-router-dom';
 import HomeSvg from '../../assets/password-svgrepo-com.svg'
-import { RiAiGenerate,RiLockPasswordLine } from "react-icons/ri";
-import { MdOutlineAssessment,MdBarChart  } from "react-icons/md";
+import { RiAiGenerate,RiLockPasswordLine,RiKeyFill } from "react-icons/ri";
+import { MdOutlineAssessment  } from "react-icons/md";
 import { CgDatabase } from "react-icons/cg";
 import { FaUserAstronaut } from 'react-icons/fa6';
 import { useNavigate } from 'react-router-dom';
 import { BiHealth } from "react-icons/bi";
 
-const navIcons=[MdBarChart,BiHealth,RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
-const nameArray=['Overview','Password Health','Generate passwords','Check password strength','Access Methods','Add passwords'];
+const navIcons=[RiKeyFill,BiHealth,RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
+const nameArray=['All passwords','Password Health','Generate passwords','Check password strength','Access Methods','Add passwords'];
 
 
 const Menubar = () => {
