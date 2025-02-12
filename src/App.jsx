@@ -1,13 +1,13 @@
 import { Fragment,useEffect, useState } from "react"
 import { Routes,Route,Navigate } from "react-router-dom"
-import Home from './routes/home/home.component';
+import { auth } from "./utils/firebase/firebase";
 import {useUserAuthContext} from './contexts/user-auth.context';
+import { onAuthStateChanged } from "firebase/auth";
+import Home from './routes/home/home.component';
 import Intro from './routes/intro/intro.component'
 import CreateUser from "./routes/create-user/create-user.component";
 import Auth from "./routes/auth/auth.component";
-import { onAuthStateChanged } from "firebase/auth";
 import Menubar from "./components/menubar/menubar.component";
-import { auth } from "./utils/firebase/firebase";
 import PropTypes from "prop-types";
 import User from "./routes/user/user.component";
 import PasswordHealth from './routes/password-health/password-health.component'
@@ -18,6 +18,7 @@ import CheckPasswordStrength from './routes/check-password-strength/check-passwo
 import AddPasswords from './routes/add-passwords/add-passwords.component';
 import AccessMethods from './routes/access-methods/access-methods.component';
 import InfoDocs from "./routes/info-docs/info-docs.component";
+import PasswordEntry from "./routes/password-entry/password-entry.component";
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUserAuthContext();
@@ -76,6 +77,7 @@ function App() {
           <Route path="password-health" element={<PasswordHealth/>} />
           <Route path="all-passwords" element={<AllPasswords/>} />
           <Route path="info-docs" element={<InfoDocs/>} />
+          <Route path="password-entry/:key" element={<PasswordEntry/>} />
         </Route>
 
         <Route path="/auth" element={

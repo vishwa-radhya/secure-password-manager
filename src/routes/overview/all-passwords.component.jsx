@@ -7,6 +7,7 @@ import { FaRegStar,FaStar } from "react-icons/fa";
 import { useToast } from '../../contexts/toast-context.context';
 import ToggleSwitch from '../../components/toggle-switch/toggle-switch.component';
 import { useGlobalDataContext } from '../../contexts/global-data.context';
+import { useNavigate } from 'react-router-dom';
 
 const stateText={
     "loading":"Getting things ready",
@@ -14,7 +15,7 @@ const stateText={
     "empty":"Nothing yet!"
 }
 
-const data=[ {key:1,username:"my user name is long longger",password:"longer password has",site:"google.com",isFav:false} ,{key:1,username:"my user name is long",password:"longer password has",site:"facbook.com",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"github.com",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"netlify.com",isFav:true},{key:1,username:"my user name is long",password:"longer password has",site:"samsung.in",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"algoexper.io",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"johnmiller.co",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"pepsico.inc",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"metaplatforms.com",isFav:false},{key:1,username:"my user name is long",password:"longer password has",site:"navbar.gallery",isFav:false}];
+const data=[ {key:1,username:"my user name is long longger",password:"longer password has",site:"google.com",isFav:false} ,{key:2,username:"my user name is long",password:"longer password has",site:"facbook.com",isFav:false},{key:3,username:"my user name is long",password:"longer password has",site:"github.com",isFav:false},{key:4,username:"my user name is long",password:"longer password has",site:"netlify.com",isFav:true},{key:5,username:"my user name is long",password:"longer password has",site:"samsung.in",isFav:false},{key:6,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:7,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:8,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:9,username:"my user name is long",password:"longer password has",site:"algoexper.io",isFav:false},{key:10,username:"my user name is long",password:"longer password has",site:"johnmiller.co",isFav:false},{key:11,username:"my user name is long",password:"longer password has",site:"pepsico.inc",isFav:false},{key:12,username:"my user name is long",password:"longer password has",site:"metaplatforms.com",isFav:false},{key:13,username:"my user name is long",password:"longer password has",site:"navbar.gallery",isFav:false}];
 
 const AllPasswords = () => {
 
@@ -24,7 +25,7 @@ const AllPasswords = () => {
     const [inputValue,setInputValue]=useState('');
     const [showFavourites,setShowFavourites]=useState(false);
     const {globalPasswordData,handleSetGlobalPasswordData}=useGlobalDataContext();
-
+    const router = useNavigate();
 
     const handleCopyClick=(password)=>{
         showToast("Copied to clipboard")
@@ -76,7 +77,7 @@ const AllPasswords = () => {
                             <Avatar variant='marble' colors={["#0a0310", "#49007e", "#ff005b", "#ff7d10", "#ffb238"]} name={d.site} size={"42"} />
                             <span>{d.site.slice(0,1).toUpperCase()}</span>
                         </div>
-                        <div className='info'>
+                        <div className='info' onClick={()=>router(`/dashboard/password-entry/${d.key}`)}>
                             <p className='bold'>{d.site}</p>
                             <p className='small'>{d.username}</p>
                         </div>
