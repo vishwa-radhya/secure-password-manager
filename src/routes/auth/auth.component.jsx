@@ -6,6 +6,7 @@ import SubmitButton from '../../components/submit-button/submit-button.component
 import { FcGoogle } from "react-icons/fc";
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
 import { signInUserWithEmailAndPassword } from '../../utils/firebase/firebase';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useNavigate } from 'react-router-dom';
 
 const defaultFormFields = {
@@ -19,6 +20,7 @@ const Auth = () => {
     const {  email, password } = formFields;
     const [passType,setPassType]=useState('password');
     const [isLoading,setIsLoading]=useState(false);
+    const {handeSetIsNewGoogleAuthUser}=useUserAuthContext();
     const router = useNavigate();
 
     const resetFormFields = () => {
@@ -57,6 +59,15 @@ const Auth = () => {
         })
       }
 
+      const handleGooglePopupSignIn=async()=>{
+        try{
+            const returnedVal = await signInWithGooglePopup();
+            if(returnedVal) handeSetIsNewGoogleAuthUser(true);
+        }catch(e){
+            console.error(e)
+            alert("error occured try again later")
+        }
+    }
 
     return ( 
         <div className='auth-div'>
@@ -85,7 +96,7 @@ const Auth = () => {
                   <SubmitButton text={'Sign In'} state={isLoading} size={"25px"} />
                 </form>
                 <div className='g-sign'>
-                  <button onClick={signInWithGooglePopup}><FcGoogle className='svg' /> Sign In with Google</button>
+                  <button onClick={handleGooglePopupSignIn}><FcGoogle className='svg' /> Sign In with Google</button>
                 </div>
             </div>
         </div>

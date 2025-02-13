@@ -7,9 +7,11 @@ import '@fontsource/poppins'
 import { UserAuthProvider } from './contexts/user-auth.context.jsx'
 import { ToastProvider } from './contexts/toast-context.context.jsx'
 import { GlobalDataProvider } from './contexts/global-data.context.jsx'
+import { GlobalUserDataProvider } from './contexts/global-user-data.context.jsx'
 
 createRoot(document.getElementById('root')).render(
   <UserAuthProvider>
+  <GlobalUserDataProvider>
   <GlobalDataProvider>
   <ToastProvider>
   <BrowserRouter>
@@ -19,5 +21,6 @@ createRoot(document.getElementById('root')).render(
   </BrowserRouter>
   </ToastProvider>
   </GlobalDataProvider>
+  </GlobalUserDataProvider>
   </UserAuthProvider>,
 )

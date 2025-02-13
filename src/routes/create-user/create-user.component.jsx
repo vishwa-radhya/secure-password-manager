@@ -7,6 +7,8 @@ import SubmitButton from '../../components/submit-button/submit-button.component
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
 import { createUserFromEmailAndPassword } from '../../utils/firebase/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
+
 const defaultFormFields = {
     displayName: '',
     email: '',
@@ -20,6 +22,7 @@ const CreateUser = () => {
       const { displayName, email, password, confirmPassword } = formFields;
       const [passType,setPassType]=useState('password');
       const [isLoading,setIsLoading]=useState(false);
+      const {handeSetIsNewGoogleAuthUser}=useUserAuthContext();
       const router = useNavigate();
 
       const resetFormFields = () => {
@@ -60,6 +63,16 @@ const CreateUser = () => {
         })
       }
 
+      const handleGooglePopupSignIn=async()=>{
+        try{
+            const returnedVal = await signInWithGooglePopup();
+            if(returnedVal) handeSetIsNewGoogleAuthUser(true);
+        }catch(e){
+            console.error(e)
+            alert("error occured try again later")
+        }
+    }
+
     return ( 
         <div className='create-user-div'>
             <div className='i-space c-i-space'>
@@ -92,7 +105,7 @@ const CreateUser = () => {
                   <SubmitButton text={'Sign Up'} state={isLoading} size={"28px"} />
               </form>
                 <div className='g-sign'>
-                <button onClick={signInWithGooglePopup}><FcGoogle className='svg' /> Sign In with Google</button>
+                <button onClick={handleGooglePopupSignIn}><FcGoogle className='svg' /> Sign In with Google</button>
                 </div>
             </div>
         </div>

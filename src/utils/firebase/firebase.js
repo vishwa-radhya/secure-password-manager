@@ -6,11 +6,13 @@ import { getAuth,
         signInWithEmailAndPassword,
         deleteUser,signOut
         } from "firebase/auth";
-import { getFirestore,doc,getDoc,setDoc } from "firebase/firestore";
+import { getDatabase,ref,get,set } from "firebase/database";
+import { hashPassword } from "../helpers/hash";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  databaseURL:import.meta.env.VITE_FIREBASE_DATABASE_URL,
   projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
   storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
@@ -20,22 +22,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-export const firestoreDatabase = getFirestore(app);
+export const realtimeDb = getDatabase(app);
+
 
 export const signInWithGooglePopup =async()=>{
     try{
         const result = await signInWithPopup(auth,provider);
         const user = result.user;
-        const usersRef = doc(firestoreDatabase,'users',user.uid);
-        const userDoc = await getDoc(usersRef);
-        if(!userDoc.exists()){
-            await setDoc(usersRef,{
+        const userRef = ref(realtimeDb,`users/${user.uid}`);
+        const snapshot = await get(userRef);
+        if(!snapshot.exists()){
+            await set(userRef,{
                 email:user.email,
                 name:user.displayName || "Anonymous",
                 password:'google popup',
+                passwordsCount:0,
+                favouritesCount:0,
+                isAccessMethodsConfigured:false,
+                hasMasterPassword:false,
             })
+            return true;
         }
-
+        return false;
     }catch(e){
         console.error('error while signing in with google popup',e)
     }
@@ -44,21 +52,26 @@ export const signInWithGooglePopup =async()=>{
 export const createUserFromEmailAndPassword =async(email,password,name)=>{
   try{
       const result = await createUserWithEmailAndPassword(auth,email,password);
-      const usersRef = doc(firestoreDatabase,'users',result.user.uid);
-      const userDoc = await getDoc(usersRef);
-      if(userDoc.exists()){
-          throw new Error("User already exists in Firestore");
+      const userRef = ref(realtimeDb,`users/${result.user.uid}`);
+      const snapshot = await get(userRef);
+      if(snapshot.exists()){
+          throw new Error("User already exists in Database");
       }
-      await setDoc(usersRef,{
+      const hashedPassword = await hashPassword(password);
+      await set(userRef,{
           email:email,
           name:name,
-          password:password,
+          password:hashedPassword,
+          passwordsCount:0,
+          favouritesCount:0,
+          isAccessMethodsConfigured:false,
+          hasMasterPassword:true,
       })
   }catch(e){
       if (e.code === 'auth/email-already-in-use') {
           alert("Email already in use. Please use a different email.");
         }
-        if(e.message !== "User already exists in Firestore"){
+        if(e.message !== "User already exists in Database"){
           console.error("Error while creating user or setting data",e);
           const user = auth.currentUser;
           if(user){

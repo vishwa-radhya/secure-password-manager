@@ -12,7 +12,6 @@ const ImgLoader = ({ imgSrc, imgWidth, ls }) => {
             <img 
                 src={imgSrc} 
                 width={imgWidth} 
-                loading="lazy"
                 className={`img ${imgLoaded ? 'fade-in' : 'hidden'}`} 
                 onLoad={() => setImgLoaded(true)}
                 alt="content"

@@ -5,8 +5,24 @@ import { useNavigate } from 'react-router-dom';
 import AppIcon from '../../assets/password-svgrepo-com.svg';
 import ImgLoader from '../../components/img-loader/img-loader.component';
 import { signInWithGooglePopup } from '../../utils/firebase/firebase';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
+
 const Intro = () => {
+        
     const router = useNavigate();
+    const {handeSetIsNewGoogleAuthUser}=useUserAuthContext();
+
+
+    const handleGooglePopupSignIn=async()=>{
+        try{
+            const returnedVal = await signInWithGooglePopup();
+            if(returnedVal) handeSetIsNewGoogleAuthUser(true);
+        }catch(e){
+            console.error(e)
+            alert("error occured try again later")
+        }
+    }
+
     return ( 
         <div className='intro-div'>
             <div className='img'>
@@ -21,7 +37,7 @@ const Intro = () => {
                 <p>Keep your passwords in a secure private vault-and simply access them with one click from all your devices.</p>
                 <div className='btns'>
                     <button onClick={()=>router('create-user')}>Get Started</button>
-                    <button className='google' onClick={signInWithGooglePopup}>
+                    <button className='google' onClick={handleGooglePopupSignIn}>
                         <FcGoogle/>
                     </button>
                 </div>

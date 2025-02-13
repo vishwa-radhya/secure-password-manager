@@ -30,8 +30,7 @@ const PasswordEntry = () => {
         setIsEditable(!isEditable);
         showToast(!isEditable ? "Editor mode":"Readonly mode")
     }
-    const handleCopyClick=(ele)=>{
-        const text = ele === "username" ? username : ele === "password" ? password : siteName;
+    const handleCopyClick=(text)=>{
         navigator.clipboard.writeText(text)
         showToast("Copied successfully");
     }
@@ -57,15 +56,15 @@ const PasswordEntry = () => {
             <div className='fields'>
                 <div className='inputs'>
                     <div>
-                        <label>Username <span><FaRegCopy onClick={()=>handleCopyClick("username")} /></span></label>
+                        <label>Username <span><FaRegCopy onClick={()=>handleCopyClick(username)} /></span></label>
                         <input className='c-input' maxLength={80} value={username}  readOnly={!isEditable} onChange={(e)=>setUserName(e.target.value)} spellCheck={false} />
                     </div>
                     <div>
-                        <label>Password <span><FaRegCopy onClick={()=>handleCopyClick("password")} /></span></label>
+                        <label>Password <span><FaRegCopy onClick={()=>handleCopyClick(password)} /></span></label>
                         <input className='c-input' maxLength={100} value={password} readOnly={!isEditable} onChange={(e)=>setPassword(e.target.value)} spellCheck={false} />
                     </div>
                     <div>
-                        <label>Site <span><FaRegCopy onClick={()=>handleCopyClick("site")} /></span></label>
+                        <label>Site <span><FaRegCopy onClick={()=>handleCopyClick(siteName)} /></span></label>
                         <input className='c-input' maxLength={100} value={siteName} readOnly={!isEditable} onChange={(e)=>setSiteName(e.target.value)} spellCheck={false} />
                     </div>
                 </div>

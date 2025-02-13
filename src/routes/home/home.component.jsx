@@ -1,6 +1,9 @@
 import './home.styles.scss';
 import userPic from '../../assets/user-account-person-avatar-svgrepo-com.svg';
 import { useUserAuthContext } from '../../contexts/user-auth.context';
+import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
+import AddPasswordDialog from '../../components/add-password-dialog/add-password-dialog.component';
+import AsyncLoader from '../../components/async-loader/async-loader.component';
 import { FaChevronRight,FaStar } from "react-icons/fa6";
 import { RiAiGenerate,RiLockPasswordLine } from "react-icons/ri";
 import { MdOutlineAssessment } from "react-icons/md";
@@ -8,19 +11,32 @@ import { CgDatabase } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { FaThList } from "react-icons/fa";
 
+
 const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords'];
 const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
+const stateText={
+    "loading":"Getting things ready",
+    "error":"Error occured! Try again later",
+    "empty":"Nothing yet!"
+}
 
 const Home = () => {
-    const {user}=useUserAuthContext(); 
+    const {user,isNewGoogleAuthUser}=useUserAuthContext(); 
+    const {userData,userDataState}=useGlobalUserDataContext();
     const router = useNavigate();
     
+
+    if(userDataState === "loading" || userDataState === "empty" || userDataState === "error"){
+            return <AsyncLoader text={stateText[userDataState]} ls={"70px"} type={userDataState} />
+        }
+
     return ( 
         <div className='home-div'>
+        <div className='container'>
             <div className='header'>
                 <p>Welcome back,</p>
                 <img src={userPic} />
-                <h1>{user?.displayName ?? "Figerland shanks"}</h1>
+                <h1>{user?.displayName || userData?.name || "Figerland shanks"}</h1>
             </div>
             <div className='main'>
                 <div className='parent'>
@@ -32,11 +48,11 @@ const Home = () => {
                     <div className='overview'>
                     <div>
                     <FaThList/>
-                    15 Entries
+                    {userData?.passwordsCount || 0} Entries
                     </div>
                     <div>
                     <FaStar />
-                    5 Favourites
+                    {userData?.favouritesCount || 0} Favourites
                     </div>
                     </div>
                 </div>
@@ -64,6 +80,8 @@ const Home = () => {
                 })}    
                 </div>
             </div>
+            </div>
+            {isNewGoogleAuthUser && <AddPasswordDialog/>}
         </div>
      );
 }
