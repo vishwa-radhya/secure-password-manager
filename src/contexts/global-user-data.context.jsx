@@ -9,7 +9,7 @@ const GlobalUserDataContext = createContext();
 export const GlobalUserDataProvider=({children})=>{
 
     const [userData,setUserData]=useState({});
-    const [userDataState,setUserDataState]=useState('loading');
+    const [userDataState,setUserDataState]=useState('loading'); //loading,error,empty
 
     useEffect(()=>{
         let unsubscribeFromDb=null;

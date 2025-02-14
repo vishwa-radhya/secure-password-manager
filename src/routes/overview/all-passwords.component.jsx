@@ -1,12 +1,14 @@
 import './all-passwords.styles.scss';
-import { FaRegCopy } from "react-icons/fa6";
-import Avatar from 'boring-avatars';
 import AsyncLoader from '../../components/async-loader/async-loader.component';
 import { useEffect, useState } from 'react';
-import { FaRegStar,FaStar } from "react-icons/fa";
 import { useToast } from '../../contexts/toast-context.context';
 import ToggleSwitch from '../../components/toggle-switch/toggle-switch.component';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useGlobalDataContext } from '../../contexts/global-data.context';
+import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
+import { FaRegStar,FaStar } from "react-icons/fa";
+import { FaRegCopy } from "react-icons/fa6";
+import Avatar from 'boring-avatars';
 import { useNavigate } from 'react-router-dom';
 
 const stateText={
@@ -24,6 +26,7 @@ const AllPasswords = () => {
     const {showToast}=useToast();
     const [inputValue,setInputValue]=useState('');
     const [showFavourites,setShowFavourites]=useState(false);
+    const {isAuthenticatedWithPassword}=useUserAuthContext();
     const {globalPasswordData,handleSetGlobalPasswordData}=useGlobalDataContext();
     const router = useNavigate();
 
@@ -52,6 +55,10 @@ const AllPasswords = () => {
             setPasswordData(globalPasswordData)
         }
     },[showFavourites,globalPasswordData])
+
+    if(!isAuthenticatedWithPassword){
+        return <AuthenticationForm />
+    }
 
     if(passwordsState === "loading" || passwordsState === "empty" || passwordsState === "error"){
         return <AsyncLoader text={stateText[passwordsState]} ls={"70px"} type={passwordsState} />

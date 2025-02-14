@@ -24,7 +24,7 @@ const Home = () => {
     const {user,isNewGoogleAuthUser}=useUserAuthContext(); 
     const {userData,userDataState}=useGlobalUserDataContext();
     const router = useNavigate();
-    
+  
 
     if(userDataState === "loading" || userDataState === "empty" || userDataState === "error"){
             return <AsyncLoader text={stateText[userDataState]} ls={"70px"} type={userDataState} />
@@ -81,7 +81,7 @@ const Home = () => {
                 </div>
             </div>
             </div>
-            {isNewGoogleAuthUser && <AddPasswordDialog/>}
+            {(isNewGoogleAuthUser || !userData?.hasMasterPassword) && <AddPasswordDialog/>}
         </div>
      );
 }

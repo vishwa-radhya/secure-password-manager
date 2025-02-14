@@ -8,11 +8,13 @@ import { UserAuthProvider } from './contexts/user-auth.context.jsx'
 import { ToastProvider } from './contexts/toast-context.context.jsx'
 import { GlobalDataProvider } from './contexts/global-data.context.jsx'
 import { GlobalUserDataProvider } from './contexts/global-user-data.context.jsx'
+import { KeyGenerationProvider } from './contexts/key-generation.context.jsx'
 
 createRoot(document.getElementById('root')).render(
   <UserAuthProvider>
   <GlobalUserDataProvider>
   <GlobalDataProvider>
+  <KeyGenerationProvider>
   <ToastProvider>
   <BrowserRouter>
   <StrictMode>
@@ -20,6 +22,7 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
   </BrowserRouter>
   </ToastProvider>
+  </KeyGenerationProvider>
   </GlobalDataProvider>
   </GlobalUserDataProvider>
   </UserAuthProvider>,

@@ -2,9 +2,12 @@ import './add-passwords.styles.scss'
 import PasswordCheck from '../../components/password-check/password-check.component';
 import SubmitButton from '../../components/submit-button/submit-button.component';
 import { useState } from 'react';
-import { FaBullseye } from "react-icons/fa";
-import RadioButton from '../../components/radio-button/radio-button.component';
 import { useNavigate } from 'react-router-dom';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
+import { useKeyGenerationContext } from '../../contexts/key-generation.context';
+import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
+import RadioButton from '../../components/radio-button/radio-button.component';
+import { FaBullseye } from "react-icons/fa";
 
 const AddPasswords = () => {
 
@@ -14,8 +17,11 @@ const AddPasswords = () => {
         const [inputSite,setInputSite]=useState("");
         const [encryptionMethod,setEncryptionMethod]=useState("AES-128");
         const [encodingMethod,setEncodingMethod]=useState("Base 64");
+        const {isAuthenticatedWithPassword}=useUserAuthContext();
+        const {userKeys}=useKeyGenerationContext();
         const router = useNavigate();
-    
+        // console.log(userKeys);
+        
     const handleSubmit=(event)=>{
         event.preventDefault();
     }
@@ -29,6 +35,10 @@ const AddPasswords = () => {
         })
       }
 
+    if(!isAuthenticatedWithPassword){
+        return <AuthenticationForm />
+    }
+    
     return ( 
         <div className='add-passwords-div'>
             <h1>Add your passwords</h1>
