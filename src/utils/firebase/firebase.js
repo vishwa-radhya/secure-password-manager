@@ -32,6 +32,8 @@ export const signInWithGooglePopup =async()=>{
         const userRef = ref(realtimeDb,`users/${user.uid}`);
         const snapshot = await get(userRef);
         if(!snapshot.exists()){
+            const saltArray = crypto.getRandomValues(new Uint8Array(16));
+            const salt = Array.from(saltArray).map(b=>b.toString(16).padStart(2,'0')).join('');
             await set(userRef,{
                 email:user.email,
                 name:user.displayName || "Anonymous",
@@ -40,6 +42,7 @@ export const signInWithGooglePopup =async()=>{
                 favouritesCount:0,
                 isAccessMethodsConfigured:false,
                 hasMasterPassword:false,
+                salt:salt
             })
             return true;
         }
@@ -58,6 +61,8 @@ export const createUserFromEmailAndPassword =async(email,password,name)=>{
           throw new Error("User already exists in Database");
       }
       const hashedPassword = await hashPassword(password);
+      const saltArray = crypto.getRandomValues(new Uint8Array(16));
+      const salt = Array.from(saltArray).map(b=>b.toString(16).padStart(2,'0')).join('');
       await set(userRef,{
           email:email,
           name:name,
@@ -66,6 +71,7 @@ export const createUserFromEmailAndPassword =async(email,password,name)=>{
           favouritesCount:0,
           isAccessMethodsConfigured:false,
           hasMasterPassword:true,
+          salt:salt,
       })
   }catch(e){
       if (e.code === 'auth/email-already-in-use') {

@@ -9,7 +9,9 @@ self.onmessage=async(event)=>{
             false,
             ["deriveKey"]
         );
-        const iterations = navigator.hardwareConcurrency > 4 ? 200000 : 100000;
+        // const iterations = navigator.hardwareConcurrency > 4 ? 200000 : 100000;
+        const iterations = 125000;
+
         //Generate AES-128 Key
         const aes128Key = await crypto.subtle.deriveKey(
             {

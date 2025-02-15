@@ -18,7 +18,7 @@ const AuthenticationForm = () => {
     const {userData,setUserDataState}=useGlobalUserDataContext();
     const {handleSetIsAuthenticatedWithPassword}=useUserAuthContext();
     const {generateKeysFromPassword}=useKeyGenerationContext();
-
+    
     const handlePassType=()=>{
         setPassType(prev=>{
             if(prev === 'password'){
@@ -51,7 +51,7 @@ const AuthenticationForm = () => {
       
       const handleKeyGeneration=async(password)=>{
         try{
-            await generateKeysFromPassword(password);
+            await generateKeysFromPassword(password,userData?.salt);
         }catch(e){
             console.error(e)
             setUserDataState('error');
