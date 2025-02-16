@@ -23,6 +23,7 @@ const CreateUser = () => {
       const [passType,setPassType]=useState('password');
       const [isLoading,setIsLoading]=useState(false);
       const {handeSetIsNewGoogleAuthUser}=useUserAuthContext();
+      const [statusMessage,setStatusMessage]=useState(''); //error
       const router = useNavigate();
 
       const resetFormFields = () => {
@@ -32,12 +33,16 @@ const CreateUser = () => {
       const handleSubmit = async (event) => {
         event.preventDefault();
         if (password !== confirmPassword) {
-          alert('passwords do not match');
+          setStatusMessage('passwords do not match');
+          setTimeout(()=>setStatusMessage(''),2500)
           return;
         }
         setIsLoading(true);
         try{
-        await createUserFromEmailAndPassword(formFields.email,formFields.password,formFields.displayName)
+        let msg=await createUserFromEmailAndPassword(formFields.email,formFields.password,formFields.displayName)
+        if(msg === "Email already in use. Please use a different email."){
+          throw new Error("Email already in use. Please use a different email.");
+        }
         setIsLoading(false)
         resetFormFields()
         router('/dashboard')
@@ -45,6 +50,8 @@ const CreateUser = () => {
           console.error(e)
           resetFormFields();
           setIsLoading(false);
+          setStatusMessage("Email already in use. Please use a different email.")
+          setTimeout(()=>setStatusMessage(''),2500)
         }
       };
     
@@ -69,7 +76,8 @@ const CreateUser = () => {
             if(returnedVal) handeSetIsNewGoogleAuthUser(true);
         }catch(e){
             console.error(e)
-            alert("error occured try again later")
+            setStatusMessage("error occured try again later")
+            setTimeout(()=>setStatusMessage(''),2500)
         }
     }
 
@@ -107,6 +115,7 @@ const CreateUser = () => {
                 <div className='g-sign'>
                 <button onClick={handleGooglePopupSignIn}><FcGoogle className='svg' /> Sign In with Google</button>
                 </div>
+                <p>{statusMessage}</p>
             </div>
         </div>
      );

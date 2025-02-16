@@ -75,7 +75,7 @@ export const createUserFromEmailAndPassword =async(email,password,name)=>{
       })
   }catch(e){
       if (e.code === 'auth/email-already-in-use') {
-          alert("Email already in use. Please use a different email.");
+          return "Email already in use. Please use a different email.";
         }
         if(e.message !== "User already exists in Database"){
           console.error("Error while creating user or setting data",e);
@@ -94,7 +94,7 @@ export const signInUserWithEmailAndPassword =async(email,password)=>{
       await signInWithEmailAndPassword(auth,email,password);
   }catch(e){
       if(e.code ==='auth/invalid-credential'){
-          alert('invalid credential')
+          return "invalid credential"
       }
       console.error('error while signing user with email and password',e)
   }

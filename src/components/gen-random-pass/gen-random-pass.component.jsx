@@ -13,6 +13,7 @@ const GenRandomPass = ({setDisplayPassword}) => {
     const [useLowercase, setUseLowercase] = useState(true);
     const [useDigits, setUseDigits] = useState(true);
     const [useSymbols, setUseSymbols] = useState(true);
+    const [statusMessage,setStatusMessage]=useState('_'); //unmatched passwords, error
     const handleSetLength=(val)=>setLength(val);
     const setters=[setUseDigits,setUseUppercase,setUseLowercase,setUseSymbols];
     const states=[useDigits,useUppercase,useLowercase,useSymbols];
@@ -24,7 +25,8 @@ const GenRandomPass = ({setDisplayPassword}) => {
         if (useDigits) characters += passwordCriteriaArray[2];
         if (useSymbols) characters += passwordCriteriaArray[3];
         if (!characters) {
-          alert("At least one character type must be selected."); 
+          setStatusMessage("At least one character type must be selected."); 
+          setTimeout(()=>setStatusMessage('_'),2500)
           return;
         }
         let newPassword = '';
@@ -39,9 +41,10 @@ const GenRandomPass = ({setDisplayPassword}) => {
       };
     return ( 
         <div className='gen-random-pass-div'>
-            <h3>Generate random password</h3>
+            <h3 style={{textAlign:'center'}}>Generate random password</h3>
             <PassLengthSlider length={length} handleSetLength={handleSetLength} />
             <div className='options'>
+                <span className='sm'>{statusMessage}</span>
                 <h3>Include:</h3>
                 <div className='opts'>
                     {setters.map((set,index)=>{

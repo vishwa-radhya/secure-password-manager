@@ -16,6 +16,7 @@ const AddPasswordDialog = () => {
     const [password,setPassword]=useState('');
     const [confirmPassword,setConfirmPassword]=useState('');
     const [isMasterPasswordCreated,setIsMasterPasswordCreated]=useState(false);
+    const [statusMessage,setStatusMessage]=useState('_'); //unmatched passwords, error
     
     const handlePassType=()=>{
         setPassType(prev=>{
@@ -30,7 +31,8 @@ const AddPasswordDialog = () => {
       const handleSubmit=async(event)=>{
         event.preventDefault();
         if(password !== confirmPassword){
-            alert('unmatched passwords')
+            setStatusMessage('unmatched passwords')
+            setTimeout(()=>setStatusMessage('_'),2500)
             return;
         } 
         setIsMasterPasswordCreated(true);
@@ -44,7 +46,8 @@ const AddPasswordDialog = () => {
             handeSetIsNewGoogleAuthUser(false);
         }catch(e){
             console.error(e)
-            alert("error occured please try again");
+            setStatusMessage("error occured please try again");
+            setTimeout(()=>setStatusMessage('_'),2500)
         }finally{
             setIsMasterPasswordCreated(false);
         }
@@ -76,6 +79,7 @@ const AddPasswordDialog = () => {
                     </div>
                     <SubmitButton text={"Submit"} state={isMasterPasswordCreated} />
                     </form>
+                    <span>{statusMessage}</span>
                 </div>
             </div>
         </div>

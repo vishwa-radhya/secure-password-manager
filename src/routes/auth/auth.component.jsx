@@ -21,6 +21,7 @@ const Auth = () => {
     const [passType,setPassType]=useState('password');
     const [isLoading,setIsLoading]=useState(false);
     const {handeSetIsNewGoogleAuthUser}=useUserAuthContext();
+    const [statusMessage,setStatusMessage]=useState('.'); //error
     const router = useNavigate();
 
     const resetFormFields = () => {
@@ -31,7 +32,10 @@ const Auth = () => {
         event.preventDefault();
         setIsLoading(true);
         try{
-        await signInUserWithEmailAndPassword(formFields.email,formFields.password)
+        let msg = await signInUserWithEmailAndPassword(formFields.email,formFields.password)
+        if(msg === "invalid credential"){
+            throw new Error("invalid credential");
+        }
         setIsLoading(false);
         resetFormFields()
         router('/dashboard')
@@ -39,6 +43,8 @@ const Auth = () => {
           console.error(e)
           setIsLoading(false);
           resetFormFields()
+          setStatusMessage(e.message);
+          setTimeout(()=>setStatusMessage('.'),2500)
         }
       };
     
@@ -65,7 +71,8 @@ const Auth = () => {
             if(returnedVal) handeSetIsNewGoogleAuthUser(true);
         }catch(e){
             console.error(e)
-            alert("error occured try again later")
+            setStatusMessage("error occured try again later")
+            setTimeout(()=>setStatusMessage('.'),2500)
         }
     }
 
@@ -98,6 +105,7 @@ const Auth = () => {
                 <div className='g-sign'>
                   <button onClick={handleGooglePopupSignIn}><FcGoogle className='svg' /> Sign In with Google</button>
                 </div>
+            <span>{statusMessage}</span>
             </div>
         </div>
      );

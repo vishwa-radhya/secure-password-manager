@@ -29,6 +29,16 @@ export const arrayBufferToBase64=(buffer)=>{
     return btoa(binary);
 }
 
+export const base64ToArrayBuffer=(base64)=>{
+    const binary = atob(base64);
+    const len = binary.length;
+    const bytes = new Uint8Array(len);
+    for(let i=0;i<len;i++){
+        bytes[i]=binary.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 export const encryptData=async(plainText,key)=>{
     //gen random initialization vector - 12 bytes
     const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -50,4 +60,19 @@ export const encryptData=async(plainText,key)=>{
         iv:arrayBufferToBase64(iv),
         cipherText:arrayBufferToBase64(cipherBuffer),
     }
+}
+
+export const decryptData=async(cipherText,iv,key)=>{
+    const ivBuffer = base64ToArrayBuffer(iv);
+    const cipherBuffer = base64ToArrayBuffer(cipherText);
+    const decryptedBuffer = await crypto.subtle.decrypt(
+        {
+            name:"AES-GCM",
+            iv:new Uint8Array(ivBuffer)
+        },
+        key,
+        cipherBuffer
+    );
+    const decoder = new TextDecoder();
+    return decoder.decode(decryptedBuffer);
 }

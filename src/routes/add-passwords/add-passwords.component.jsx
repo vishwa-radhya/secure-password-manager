@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useToast } from '../../contexts/toast-context.context';
 import { useKeyGenerationContext } from '../../contexts/key-generation.context';
+import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
 import { encryptData } from '../../utils/helpers/hash';
 import { realtimeDb } from '../../utils/firebase/firebase';
-import { ref,push } from 'firebase/database';
+import { ref,push, update } from 'firebase/database';
 import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
 import RadioButton from '../../components/radio-button/radio-button.component';
 import { FaBullseye } from "react-icons/fa";
@@ -24,6 +25,7 @@ const AddPasswords = () => {
         const [encodingMethod,setEncodingMethod]=useState("Base 64");
         const {isAuthenticatedWithPassword,handleSetIsAuthenticatedWithPassword,user}=useUserAuthContext();
         const {userKeys}=useKeyGenerationContext();
+        const {userData}=useGlobalUserDataContext();
         const {showToast}=useToast();
         const router = useNavigate();
         
@@ -36,7 +38,15 @@ const AddPasswords = () => {
     
     const pushToDb=async(passwordDataObject)=>{
         const passwordsRef = ref(realtimeDb,`userPasswords/${user.uid}`);
-        await push(passwordsRef,passwordDataObject);
+        const newPasswordsRef = push(passwordsRef);
+        const newPasswordKey = newPasswordsRef.key;
+
+        const currentPasswordsCount = userData?.passwordsCount || 0;
+
+        const updates={};
+        updates[`userPasswords/${user.uid}/${newPasswordKey}`]=passwordDataObject;
+        updates[`users/${user.uid}/passwordsCount`]=currentPasswordsCount+1;
+        await update(ref(realtimeDb),updates);
     }
 
     const handleSubmit=async(event)=>{
@@ -70,7 +80,7 @@ const AddPasswords = () => {
                 isFavourite:false,
                 timestamp:Date.now()
             }
-            pushToDb(encryptedPasswordData);
+            await pushToDb(encryptedPasswordData);
             resetFields()
             setIsProcessLoading(false);
             showToast("Password added successfully")

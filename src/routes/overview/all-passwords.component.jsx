@@ -1,15 +1,17 @@
 import './all-passwords.styles.scss';
 import AsyncLoader from '../../components/async-loader/async-loader.component';
-import { useEffect, useState } from 'react';
+import {  useState,useMemo } from 'react';
 import { useToast } from '../../contexts/toast-context.context';
 import ToggleSwitch from '../../components/toggle-switch/toggle-switch.component';
 import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useGlobalDataContext } from '../../contexts/global-data.context';
+import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
 import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
 import { FaRegStar,FaStar } from "react-icons/fa";
 import { FaRegCopy } from "react-icons/fa6";
 import Avatar from 'boring-avatars';
 import { useNavigate } from 'react-router-dom';
+import { handleFavClick } from '../../utils/helpers/globalFunctions';
 
 const stateText={
     "loading":"Getting things ready",
@@ -17,50 +19,38 @@ const stateText={
     "empty":"Nothing yet!"
 }
 
-const data=[ {key:1,username:"my user name is long longger",password:"longer password has",site:"google.com",isFav:false} ,{key:2,username:"my user name is long",password:"longer password has",site:"facbook.com",isFav:false},{key:3,username:"my user name is long",password:"longer password has",site:"github.com",isFav:false},{key:4,username:"my user name is long",password:"longer password has",site:"netlify.com",isFav:true},{key:5,username:"my user name is long",password:"longer password has",site:"samsung.in",isFav:false},{key:6,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:7,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:8,username:"my user name is long",password:"longer password has",site:"my secure site",isFav:false},{key:9,username:"my user name is long",password:"longer password has",site:"algoexper.io",isFav:false},{key:10,username:"my user name is long",password:"longer password has",site:"johnmiller.co",isFav:false},{key:11,username:"my user name is long",password:"longer password has",site:"pepsico.inc",isFav:false},{key:12,username:"my user name is long",password:"longer password has",site:"metaplatforms.com",isFav:false},{key:13,username:"my user name is long",password:"longer password has",site:"navbar.gallery",isFav:false}];
-
 const AllPasswords = () => {
-
-    const [passwordData,setPasswordData]=useState(data);
-    const [passwordsState,setPasswordsState]=useState(''); //loading,error,empty,
+    
     const {showToast}=useToast();
     const [inputValue,setInputValue]=useState('');
     const [showFavourites,setShowFavourites]=useState(false);
     const {isAuthenticatedWithPassword}=useUserAuthContext();
-    const {globalPasswordData,handleSetGlobalPasswordData}=useGlobalDataContext();
+    const {globalPasswordData,passwordsState}=useGlobalDataContext();
+    const {userData}=useGlobalUserDataContext();
     const router = useNavigate();
 
     const handleCopyClick=(password)=>{
-        showToast("Copied to clipboard")
+        // showToast("Copied to clipboard")
     }
 
-    const handleFavClick=(isFav)=>{
-        showToast(!isFav ? "Added to favourites": "Removed from favourites")
+    const handleFavouritesClick=(isFavourite,key)=>{
+        const result = handleFavClick(isFavourite,key,userData?.favouritesCount)
+        showToast(result ? `${!isFavourite ? "Added to favourites": "Removed from favourites"}` : "error occured! Try again later")
     }
 
-    useEffect(()=>{
-        handleSetGlobalPasswordData(data);
-    },[])
-
-    useEffect(()=>{
-        const filteredData = globalPasswordData.filter(obj=>obj.site.toLowerCase().startsWith(inputValue.toLowerCase()))
-        setPasswordData(filteredData)
-    },[inputValue,globalPasswordData])
-
-    useEffect(()=>{
-        if(showFavourites){
-            const favData=globalPasswordData.filter(obj=>obj.isFav);
-            setPasswordData(favData)
-        }else{
-            setPasswordData(globalPasswordData)
-        }
-    },[showFavourites,globalPasswordData])
+    const filteredPasswords = useMemo(() => {
+        return globalPasswordData
+          .filter(obj =>
+            obj.inputSite.toLowerCase().startsWith(inputValue.toLowerCase())
+          )
+          .filter(obj => (showFavourites ? obj.isFavourite : true));
+      }, [globalPasswordData, inputValue, showFavourites]);
 
     if(!isAuthenticatedWithPassword){
         return <AuthenticationForm />
     }
 
-    if(passwordsState === "loading" || passwordsState === "empty" || passwordsState === "error"){
+    if(passwordsState === "loading"  || passwordsState === "error" || passwordsState === "empty"){
         return <AsyncLoader text={stateText[passwordsState]} ls={"70px"} type={passwordsState} />
     }
 
@@ -70,7 +60,7 @@ const AllPasswords = () => {
             <h1>All passwords</h1>
             <div className='opts'>
                 <div >
-                    <input maxLength={100} type='search' placeholder='search' className='c-input' value={inputValue} onChange={(e)=>setInputValue(e.target.value)} />
+                    <input maxLength={100} type='search' placeholder='search by site' className='c-input' value={inputValue} onChange={(e)=>setInputValue(e.target.value)} />
                 </div>
                 <div className='favs'>
                     <span>Favourites</span>
@@ -78,22 +68,22 @@ const AllPasswords = () => {
                 </div>
             </div>
             <div className='main'>
-                {passwordData.map((d,index)=>{
-                    return <div className='tile' key={`pass-data-${index}`}>
+                {filteredPasswords.map((d)=>{
+                    return <div className='tile' key={d.key}>
                         <div className='pic'>
-                            <Avatar variant='marble' colors={["#0a0310", "#49007e", "#ff005b", "#ff7d10", "#ffb238"]} name={d.site} size={"42"} />
-                            <span>{d.site.slice(0,1).toUpperCase()}</span>
+                            <Avatar variant='marble' colors={["#0a0310", "#49007e", "#ff005b", "#ff7d10", "#ffb238"]} name={d.inputSite} size={"42"} />
+                            <span>{d.inputSite.slice(0,1).toUpperCase()}</span>
                         </div>
                         <div className='info' onClick={()=>router(`/dashboard/password-entry/${d.key}`)}>
-                            <p className='bold'>{d.site}</p>
-                            <p className='small'>{d.username}</p>
+                            <p className='bold'>{d.inputSite}</p>
+                            <p className='small'>{d.inputUsername}</p>
                         </div>
                         <div className='arrow' >
-                            <div onClick={()=>handleCopyClick(d.password)}>
+                            <div onClick={()=>handleCopyClick(d.cipherText)}>
                             <FaRegCopy/>
                             </div>
-                            <div onClick={()=>handleFavClick(d.isFav)}>
-                                {!d.isFav ? <FaRegStar/> : <FaStar style={{color:"gray"}} />}
+                            <div onClick={()=>handleFavouritesClick(d.isFavourite,d.key)}>
+                                {!d.isFavourite ? <FaRegStar/> : <FaStar style={{color:"gray"}} />}
                             </div>
                         </div>
                     </div>
