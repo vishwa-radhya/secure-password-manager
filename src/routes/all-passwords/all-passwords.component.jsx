@@ -6,7 +6,9 @@ import ToggleSwitch from '../../components/toggle-switch/toggle-switch.component
 import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useGlobalDataContext } from '../../contexts/global-data.context';
 import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
+import { useKeyGenerationContext } from '../../contexts/key-generation.context';
 import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
+import { handleKeySelectionAndDecryptionProcess } from '../../utils/helpers/globalFunctions';
 import { FaRegStar,FaStar } from "react-icons/fa";
 import { FaRegCopy } from "react-icons/fa6";
 import Avatar from 'boring-avatars';
@@ -27,10 +29,18 @@ const AllPasswords = () => {
     const {isAuthenticatedWithPassword}=useUserAuthContext();
     const {globalPasswordData,passwordsState}=useGlobalDataContext();
     const {userData}=useGlobalUserDataContext();
+    const {userKeys}=useKeyGenerationContext();
     const router = useNavigate();
 
-    const handleCopyClick=(password)=>{
-        // showToast("Copied to clipboard")
+    const handleCopyClick=async(passwordEntry)=>{
+        try{
+            const decryptedPassword = await handleKeySelectionAndDecryptionProcess(passwordEntry,userKeys);
+            navigator.clipboard.writeText(decryptedPassword);
+            showToast("Copied to clipboard");
+        }catch(e){
+            console.error(e);
+            showToast("Error occured please try again")
+        }
     }
 
     const handleFavouritesClick=(isFavourite,key)=>{
@@ -79,7 +89,7 @@ const AllPasswords = () => {
                             <p className='small'>{d.inputUsername}</p>
                         </div>
                         <div className='arrow' >
-                            <div onClick={()=>handleCopyClick(d.cipherText)}>
+                            <div onClick={()=>handleCopyClick(d)}>
                             <FaRegCopy/>
                             </div>
                             <div onClick={()=>handleFavouritesClick(d.isFavourite,d.key)}>

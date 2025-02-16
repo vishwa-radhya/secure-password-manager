@@ -5,11 +5,14 @@ import { useKeyGenerationContext } from '../../contexts/key-generation.context';
 import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
 import { useEffect, useState } from 'react';
 import { useToast } from '../../contexts/toast-context.context';
+import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { FaRegStar,FaPen } from 'react-icons/fa';
 import { FaStar,FaTrash,FaRegCopy } from 'react-icons/fa6';
 import Avatar from 'boring-avatars';
-import { decryptData } from '../../utils/helpers/hash';
-import { handleFavClick } from '../../utils/helpers/globalFunctions';
+import { handleFavClick, handleKeySelectionAndDecryptionProcess,handleKeySelectionAndEncryptionProcess } from '../../utils/helpers/globalFunctions';
+import { ref,  update } from 'firebase/database';
+import { realtimeDb } from '../../utils/firebase/firebase';
+import { useNavigate } from 'react-router-dom';
 
 const PasswordEntry = () => {
     const {key}=useParams();
@@ -20,9 +23,12 @@ const PasswordEntry = () => {
     const {showToast}=useToast();
     const {userData}=useGlobalUserDataContext();
     const {userKeys}=useKeyGenerationContext();
+    const {user}=useUserAuthContext();
     const [siteName,setSiteName]=useState('');
     const [username,setUserName]=useState('');
+    const [initialPassword,setInitialPassword]=useState('');
     const [password,setPassword]=useState('');
+    const router = useNavigate();
     
     const handleEditClick=()=>{
         setIsEditable(!isEditable);
@@ -40,6 +46,47 @@ const PasswordEntry = () => {
       }
     }
 
+    const handleEntryEdit=async()=>{
+      const updates={};
+      if(siteName !== currentPasswordDetails?.inputSite) updates['inputSite']=siteName;
+      if(username !== currentPasswordDetails?.inputUsername) updates['inputUsername']=username;
+      if(password!==initialPassword) updates['cipherText']=password;
+      if(!Object.keys(updates).length){
+        showToast("No changes done")
+        return;
+      }
+      try{
+      if(updates.cipherText){
+        const {iv,cipherText}=await handleKeySelectionAndEncryptionProcess(userKeys,currentPasswordDetails?.encryptionMethod,password)
+        updates['cipherText']=cipherText;
+        updates['iv']=iv;
+      }
+        const userPasswordRef = ref(realtimeDb,`userPasswords/${user.uid}/${currentPasswordDetails.key}`);
+        await update(userPasswordRef,updates);
+        showToast("Entries updated successfully")
+      }catch(e){
+        console.error(e);
+        showToast("Error editing password details");
+      }
+    }
+
+    const handleEntryDelete=async()=>{
+      try{
+        const updates={};
+        updates[`userPasswords/${user.uid}/${currentPasswordDetails.key}`]=null;
+        updates[`users/${user.uid}/passwordsCount`]=userData.passwordsCount-1;
+        if(currentPasswordDetails.isFavourite){
+          updates[`users/${user.uid}/favouritesCount`]=userData.favouritesCount-1;
+        }
+        await update(ref(realtimeDb),updates);
+        router('/dashboard/all-passwords')
+        showToast("Password deleted successfully")
+      }catch(e){
+        console.error(e);
+        showToast("Password deletion failed")
+      }
+    }
+
     useEffect(() => {
         const passwordEntry = globalPasswordData.find(obj => obj.key === key);
         if (passwordEntry) {
@@ -49,23 +96,9 @@ const PasswordEntry = () => {
           
           const decryptPassword = async () => {
             try {
-              const decryptionKey = passwordEntry.encryptionMethod === "AES-128"
-                ? await crypto.subtle.importKey(
-                    "raw",
-                    userKeys.userAes128Key,
-                    { name: "AES-GCM" },
-                    true,
-                    ["decrypt"]
-                  )
-                : await crypto.subtle.importKey(
-                    "raw",
-                    userKeys.userAes256Key,
-                    { name: "AES-GCM" },
-                    true,
-                    ["decrypt"]
-                  );
-              const decrypted = await decryptData(passwordEntry.cipherText, passwordEntry.iv, decryptionKey);
+              const decrypted = await handleKeySelectionAndDecryptionProcess(passwordEntry,userKeys);
               setPassword(decrypted);
+              setInitialPassword(decrypted);
             } catch (error) {
               console.error("Error during decryption", error);
               showToast("Failed to decrypt password");
@@ -77,7 +110,7 @@ const PasswordEntry = () => {
             decryptPassword();
           }
         }
-      }, [globalPasswordData, key, userKeys, showToast]);
+      }, [globalPasswordData, key, userKeys]);
 
     return ( 
         <div className='password-entry-div'>
@@ -93,7 +126,7 @@ const PasswordEntry = () => {
                 <p>{currentPasswordDetails?.inputSite}</p>
                 <div className='opts'>
                     <button className='blue c-btn' onClick={handleEditClick} disabled={isEditingDisabled} ><FaPen/></button>
-                    <button className='c-btn'><FaTrash/></button>
+                    <button className='c-btn' onClick={handleEntryDelete} ><FaTrash/></button>
                     <button className='c-btn' onClick={()=>handleFavouritesClick(currentPasswordDetails?.isFavourite,currentPasswordDetails?.key)}>{currentPasswordDetails?.isFavourite ?  <FaStar/>  :  <FaRegStar/> } </button>
                 </div>
             </div>
@@ -112,7 +145,7 @@ const PasswordEntry = () => {
                         <input className='c-input' maxLength={100} value={siteName} readOnly={!isEditable} onChange={(e)=>setSiteName(e.target.value)} spellCheck={false} />
                     </div>
                 </div>
-                <button className='c-btn confirm-changes' disabled={!isEditable} >Confirm changes</button>
+                <button className='c-btn confirm-changes' disabled={!isEditable} onClick={handleEntryEdit}>Confirm changes</button>
             </div>
             </div>
         </div>

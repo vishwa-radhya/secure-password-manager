@@ -11,7 +11,7 @@ export const ToastProvider = ({ children }) => {
 
   let hideTimeout;
 
-  const showToast = (msg, duration = 2000) => {
+  const showToast = (msg, duration = 2500) => {
     setMessage(msg);
     setIsToastVisible(true);
     setAnimationClass("fadeIn");

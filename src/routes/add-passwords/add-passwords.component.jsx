@@ -7,7 +7,7 @@ import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useToast } from '../../contexts/toast-context.context';
 import { useKeyGenerationContext } from '../../contexts/key-generation.context';
 import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
-import { encryptData } from '../../utils/helpers/hash';
+import { handleKeySelectionAndEncryptionProcess } from '../../utils/helpers/globalFunctions';
 import { realtimeDb } from '../../utils/firebase/firebase';
 import { ref,push, update } from 'firebase/database';
 import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
@@ -57,20 +57,7 @@ const AddPasswords = () => {
         }
         setIsProcessLoading(true);
         try{
-            const key = encryptionMethod === "AES-128" ? await crypto.subtle.importKey(
-                "raw",
-                userKeys.userAes128Key,
-                {name:"AES-GCM"},
-                true,
-                ["encrypt","decrypt"]
-            ) : await crypto.subtle.importKey(
-                "raw",
-                userKeys.userAes256Key,
-                {name:"AES-GCM"},
-                true,
-                ["encrypt","decrypt"]
-            );
-            const {iv,cipherText}= await encryptData(inputPassword,key);
+            const {iv,cipherText}=await handleKeySelectionAndEncryptionProcess(userKeys,encryptionMethod,inputPassword);
             const encryptedPasswordData={
                 inputSite,
                 inputUsername,

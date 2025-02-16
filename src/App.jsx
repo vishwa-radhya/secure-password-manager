@@ -11,7 +11,7 @@ import Menubar from "./components/menubar/menubar.component";
 import PropTypes from "prop-types";
 import User from "./routes/user/user.component";
 import PasswordHealth from './routes/password-health/password-health.component'
-import AllPasswords from "./routes/overview/all-passwords.component";
+import AllPasswords from "./routes/all-passwords/all-passwords.component";
 import AuthLoader from './components/auth-loader/auth-loader.component';
 import GeneratePasswords from './routes/generate-passwords/generate-passwords.component';
 import CheckPasswordStrength from './routes/check-password-strength/check-password-strength.component';

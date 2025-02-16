@@ -1,6 +1,7 @@
 import { realtimeDb } from "../firebase/firebase";
 import { update,ref } from "firebase/database";
 import { auth } from "../firebase/firebase";
+import { encryptData,decryptData } from "./hash";
 
 const updateDb=async(isFavourite,key,favCount)=>{
         try {
@@ -25,3 +26,41 @@ export const handleFavClick=async(isFavourite,key,favCount)=>{
             return 0;
         }
     }
+
+export const handleKeySelectionAndEncryptionProcess=async(userKeys,encryptionMethod,inputPassword)=>{
+    const key = encryptionMethod === "AES-128" ? await crypto.subtle.importKey(
+        "raw",
+        userKeys.userAes128Key,
+        {name:"AES-GCM"},
+        true,
+        ["encrypt","decrypt"]
+    ) : await crypto.subtle.importKey(
+        "raw",
+        userKeys.userAes256Key,
+        {name:"AES-GCM"},
+        true,
+        ["encrypt","decrypt"]
+    );
+    const {iv,cipherText}= await encryptData(inputPassword,key);
+    return {iv,cipherText};
+}
+
+export const handleKeySelectionAndDecryptionProcess=async(passwordEntry,userKeys)=>{
+    const decryptionKey = passwordEntry.encryptionMethod === "AES-128"
+    ? await crypto.subtle.importKey(
+        "raw",
+        userKeys.userAes128Key,
+        { name: "AES-GCM" },
+        true,
+        ["decrypt"]
+        )
+    : await crypto.subtle.importKey(
+        "raw",
+        userKeys.userAes256Key,
+        { name: "AES-GCM" },
+        true,
+        ["decrypt"]
+        );
+    const decrypted = await decryptData(passwordEntry.cipherText, passwordEntry.iv, decryptionKey);
+    return decrypted;
+}
