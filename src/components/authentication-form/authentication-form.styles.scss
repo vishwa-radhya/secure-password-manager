@@ -64,3 +64,36 @@
         }
     }
 }
+@media screen and (max-width:650px){
+    .authentication-form-div{
+        .main{
+            flex-direction: column;
+            .feed{
+                width: 100%;
+                gap: 20px;
+                align-items: center;
+                .img{
+                    display: flex;
+                    justify-content: center;
+                    img{
+                        width: 7%;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:400px){
+    .authentication-form-div{
+        .main{
+            gap: 10px;
+            .feed{
+                gap: 15px;
+                align-items: center;
+                .img{
+                    display: none;
+                }
+            }
+        }
+    }
+}

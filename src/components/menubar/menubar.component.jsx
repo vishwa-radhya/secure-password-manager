@@ -28,7 +28,7 @@ const Menubar = () => {
             <div className='menubar-div'>
             <div className='m-logo' onClick={()=>router('dashboard')}>
                     <img src={HomeSvg} />
-                    SPM
+                    <span>SPM</span>
                 </div>
                 <div className='navs'>
                     {navIcons.map((Icon,index)=>{

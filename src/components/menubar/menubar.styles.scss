@@ -50,3 +50,15 @@
 .container{
     padding: 10px;
 }
+@media screen and (max-width:600px){
+    .menubar-div{
+        .m-logo{
+            span{
+                display: none;
+            }
+        }
+        .navs{
+            display: none;
+        }
+    }
+}

@@ -65,12 +65,13 @@ body{
 }
 
 .c-i-main{
-  width: 50%;
+  // width: 50%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 40px;
+  flex: 1;
   .head{
       text-align: center;
       display: flex;
@@ -155,5 +156,153 @@ button{
   border-width: 5px;
   border-style: solid;
   border-color: transparent transparent black transparent;
+  }
+}
+
+//common no-auth styles
+@media screen and (max-width:1000px){
+  .auth-div,.create-user-div{
+      gap: 0px;
+      .c-i-space{
+          width: 45%;
+          & > *:nth-child(1){
+              img{
+                  width: 13%;
+              }
+              span{
+                  font-size: 1.1rem;
+              }
+          }
+          & > *:nth-child(2){
+              p{
+                  font-size: 3rem;
+              }
+          }
+      }
+      .c-i-main{
+          form{
+              width: 65%;
+          }
+          .g-sign{
+              width: 65%;
+          }
+      }
+  }
+}
+@media screen and (max-width:800px){
+  .auth-div,.create-user-div{
+      .c-i-space{
+          width: 40%;
+          & > *:nth-child(1){
+              span{
+                  font-size: 0.9rem;
+              }
+          }
+          & > *:nth-child(2){
+              p{
+                  font-size: 2rem;
+              }
+          }
+      }
+      .c-i-main{
+          .head{
+              h1{
+                  font-size: 2rem;
+              }
+          }
+          form{
+              width: 70%;
+          }
+          .g-sign{
+              width: 70%;
+          }
+      }
+  }
+}
+@media screen and (max-width:720px){
+  .auth-div,.create-user-div{
+      gap: 10px;
+      flex-direction: column;
+      .c-i-space{
+          width: 100%;
+          gap: 30px;
+        height: 140px;
+          & > *:nth-child(1){
+              img{
+                  width: 8%;
+              }
+              span{
+                  font-size: 1.2rem;
+              }
+          }
+          & > *:nth-child(2){
+              p{
+                  display: none;
+                  height: 30%;
+              }
+          }
+      }
+  }
+}
+@media screen and (max-width:550px){
+  .auth-div,.create-user-div{
+      flex-direction: column;
+      .c-i-space{
+        height: 20%;
+          gap: 80px;
+          & > *:nth-child(1){
+              img{
+                  width: 9%;
+              }
+              span{
+                  font-size: 1.1rem;
+              }
+          }
+      }
+      .c-i-main{
+          form{
+              width: 80%;
+          }
+          .g-sign{
+              width: 80%;
+          }
+      }
+  }
+}
+@media screen and (max-width:435px){
+  .auth-div,.create-user-div{
+      flex-direction: column;
+      gap: 50px;
+      .c-i-space{
+          width: 100%;
+          gap: 100px;
+          height: 200px;
+          & > *:nth-child(1){
+              img{
+                  width: 9%;
+              }
+              span{
+                  font-size: 1.1rem;
+              }
+          }
+          & > *:nth-child(2){
+              p{
+                  font-size: 1.3rem;
+              }
+          }
+      }
+      .c-i-main{
+          .head{
+              h1{
+                  font-size: 1.8rem;
+              }
+          }
+          form{
+              width: 90%;
+          }
+          .g-sign{
+              width: 90%;
+          }
+      }
   }
 }

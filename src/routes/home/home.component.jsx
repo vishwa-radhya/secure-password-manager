@@ -50,7 +50,7 @@ const Home = () => {
                     <FaThList/>
                     {userData?.passwordsCount || 0} Entries
                     </div>
-                    <div>
+                    <div className='favs'>
                     <FaStar />
                     {userData?.favouritesCount || 0} Favourites
                     </div>
@@ -74,7 +74,7 @@ const Home = () => {
                         <div>
                             <Icon className='icon' />
                         </div>
-                        <div>{nameArray[index]}</div>
+                        <div className='name'>{nameArray[index]}</div>
                         <div className='angle'><FaChevronRight/></div>
                     </div>
                 })}    

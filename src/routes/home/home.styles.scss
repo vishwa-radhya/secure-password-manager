@@ -125,7 +125,6 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                
                 }
                 .icon{
                     font-size: 1.4rem;
@@ -137,6 +136,116 @@
         }
         .bs{
             box-shadow: 2px 2px 4px rgb(202, 202, 202);
+        }
+    }
+}
+@media screen and (max-width:910px){
+    .home-div{
+        .container{
+            flex-direction: column;
+            width: 100%;
+            .header{
+                img{
+                    width: 25%;
+                }
+            }
+            .main{
+                .parent{
+                    div{
+                        flex: 1;
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:600px){
+    .home-div{
+        .container{
+            .header{
+                img{
+                    scale: 1.2;
+                }
+            }
+            .main{
+                .parent{
+                    flex-direction: column;
+                    &:nth-child(1){
+                        .overview{
+                            .favs{
+                                justify-content: right;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:450px){
+    .home-div{
+        padding: 4px;
+        .container{
+            gap: 20px;
+            .header{
+                img{
+                    width: 50%;
+                }
+            }
+            .main{
+                gap: 15px;
+                .parent{
+                    gap: 10px;
+                }
+                .blocks{
+                    gap: 9px;
+                   div{
+                    .icon{
+                        scale: 1.1;
+                    }
+                    .name{
+                        font-size: 1.1rem;
+                    }
+                   }
+                }
+            }
+        }
+    }
+}
+@media screen and (max-width:400px){
+    .home-div{
+        padding: 0px;
+        .container{
+            .header{
+                padding: 15px;
+                gap: 40px;
+                box-shadow: 2px 2px 4px rgb(202, 202, 202);
+                border: none;
+                img{
+                    width: 20%;
+                    scale: 2;
+                }
+                p{
+                    font-size: 0.9rem;
+                }
+            }
+            .main{
+                gap: 15px;
+                .parent{
+                    font-size: 1rem;
+                }
+                .blocks{
+                    gap: 9px;
+                   div{
+                    .icon{
+                        scale: 1;
+                    }
+                    .name{
+                        font-size: 1rem;
+                    }
+                   }
+                }
+            }
         }
     }
 }
