@@ -60,7 +60,7 @@ export const GlobalDataProvider=({children})=>{
             onChildChanged(passwordsDataRef,handlePasswordsChange);
             onChildRemoved(passwordsDataRef,handlePasswordsRemoval);
         }catch(e){
-            console.error("error while fetching passwords");
+            console.error("error while fetching passwords",e);
             setPasswordsState("error");
         }
         return ()=>{

@@ -129,6 +129,7 @@ const PasswordEntry = () => {
                     <button className='c-btn' onClick={handleEntryDelete} ><FaTrash/></button>
                     <button className='c-btn' onClick={()=>handleFavouritesClick(currentPasswordDetails?.isFavourite,currentPasswordDetails?.key)}>{currentPasswordDetails?.isFavourite ?  <FaStar/>  :  <FaRegStar/> } </button>
                 </div>
+                <span>Created at: {new Date(currentPasswordDetails?.timestamp).toUTCString().replace("GMT",'')}</span>
             </div>
             <div className='fields'>
                 <div className='inputs'>
