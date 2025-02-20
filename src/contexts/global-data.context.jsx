@@ -9,7 +9,10 @@ const GlobalDataContext = createContext();
 export const GlobalDataProvider=({children})=>{
     const [globalPasswordData,setGlobalPasswordData]=useState([]);
     const [passwordsState,setPasswordsState]=useState(''); // loading, error
+    const [analysisData,setAnalysisData]=useState([]);
     const {user}=useUserAuthContext();
+
+    const handleSetAnalysisData=(data)=>setAnalysisData(data);
 
     useEffect(()=>{
         if(!user) return;
@@ -77,7 +80,7 @@ export const GlobalDataProvider=({children})=>{
       }, [globalPasswordData, passwordsState])
 
     return (
-        <GlobalDataContext.Provider value={{globalPasswordData,passwordsState}}>
+        <GlobalDataContext.Provider value={{globalPasswordData,passwordsState,handleSetAnalysisData,analysisData}}>
             {children}
         </GlobalDataContext.Provider>
     )

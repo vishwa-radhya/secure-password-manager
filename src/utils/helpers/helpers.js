@@ -16,6 +16,7 @@ export const defaultChecklist={
 }
 export const passwordCriteriaArray=['ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz','0123456789','!@#$%^&*()_+=-`~[]\\{}|;\':",./<>?'];
 export const statusColors=["rgb(252, 121, 121)","orange","rgb(235, 230, 75)","rgb(192, 236, 73)","rgb(113, 225, 52)","rgb(122, 121, 121)"];
+export const progressDotColors=['rgb(156, 7, 7)','rgb(156, 72, 7)','rgb(156, 131, 7)','rgb(114, 156, 7)','rgb(34, 156, 7)'];
 export const statusCodeName=['very weak','weak','moderate','strong','very Strong','status'];
 export const crackTimeCodeNames={
     online_throttling_100_per_hour:"Unknown time",
