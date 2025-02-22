@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useGlobalDataContext } from '../../contexts/global-data.context';
 import { useKeyGenerationContext } from '../../contexts/key-generation.context';
 import { useGlobalUserDataContext } from '../../contexts/global-user-data.context';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useToast } from '../../contexts/toast-context.context';
 import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { FaRegStar,FaPen } from 'react-icons/fa';
@@ -13,6 +13,7 @@ import { handleFavClick, handleKeySelectionAndDecryptionProcess,handleKeySelecti
 import { ref,  update } from 'firebase/database';
 import { realtimeDb } from '../../utils/firebase/firebase';
 import { useNavigate } from 'react-router-dom';
+import DeletePasswordDialog from '../../components/delete-password-dialog/delete-password-dialog.component';
 
 const PasswordEntry = () => {
     const {key}=useParams();
@@ -20,6 +21,7 @@ const PasswordEntry = () => {
     const [currentPasswordDetails,setCurrentPasswordDetails]=useState([]);
     const [isEditable,setIsEditable]=useState(false);
     const [isEditingDisabled,setIsEditingDisabled]=useState(false);
+    const [isLoading,setIsLoading]=useState(false);
     const {showToast}=useToast();
     const {userData}=useGlobalUserDataContext();
     const {userKeys}=useKeyGenerationContext();
@@ -28,7 +30,10 @@ const PasswordEntry = () => {
     const [username,setUserName]=useState('');
     const [initialPassword,setInitialPassword]=useState('');
     const [password,setPassword]=useState('');
+    const [isDeletePasswordDialogOpen,setIsDeletePasswordDialogOpen]=useState(false);
     const router = useNavigate();
+    const deleteButtonRef =useRef(null);
+    const deleteDialogRef = useRef(null);
     
     const handleEditClick=()=>{
         setIsEditable(!isEditable);
@@ -71,6 +76,7 @@ const PasswordEntry = () => {
     }
 
     const handleEntryDelete=async()=>{
+      setIsLoading(true);
       try{
         const updates={};
         updates[`userPasswords/${user.uid}/${currentPasswordDetails.key}`]=null;
@@ -79,11 +85,16 @@ const PasswordEntry = () => {
           updates[`users/${user.uid}/favouritesCount`]=userData.favouritesCount-1;
         }
         await update(ref(realtimeDb),updates);
+        setIsLoading(false);
+        setIsDeletePasswordDialogOpen(false);
         router('/dashboard/all-passwords')
         showToast("Password deleted successfully")
       }catch(e){
         console.error(e);
         showToast("Password deletion failed")
+      }finally{
+        setIsLoading(false);
+        setIsDeletePasswordDialogOpen(false);
       }
     }
 
@@ -112,6 +123,18 @@ const PasswordEntry = () => {
         }
       }, [globalPasswordData, key, userKeys]);
 
+      useEffect(()=>{
+        if(isDeletePasswordDialogOpen){
+          const handleClickOutside =(event)=>{
+            if(deleteButtonRef.current && !deleteButtonRef.current.contains(event.target) && deleteDialogRef.current && !deleteDialogRef.current.contains(event.target)){
+              setIsDeletePasswordDialogOpen(false);
+            }
+          }
+          document.addEventListener('click',handleClickOutside);
+            return ()=>document.removeEventListener('click',handleClickOutside);
+        }
+      },[isDeletePasswordDialogOpen])
+
     return ( 
         <div className='password-entry-div'>
             <h1>
@@ -126,7 +149,7 @@ const PasswordEntry = () => {
                 <p>{currentPasswordDetails?.inputSite}</p>
                 <div className='opts'>
                     <button className='blue c-btn' onClick={handleEditClick} disabled={isEditingDisabled} ><FaPen/></button>
-                    <button className='c-btn' onClick={handleEntryDelete} ><FaTrash/></button>
+                    <button className='c-btn' ref={deleteButtonRef} onClick={()=>setIsDeletePasswordDialogOpen(true)} ><FaTrash/></button>
                     <button className='c-btn' onClick={()=>handleFavouritesClick(currentPasswordDetails?.isFavourite,currentPasswordDetails?.key)}>{currentPasswordDetails?.isFavourite ?  <FaStar/>  :  <FaRegStar/> } </button>
                 </div>
                 <span>Created at: {new Date(currentPasswordDetails?.timestamp).toUTCString().replace("GMT",'')}</span>
@@ -149,6 +172,7 @@ const PasswordEntry = () => {
                 <button className='c-btn confirm-changes' disabled={!isEditable} onClick={handleEntryEdit}>Confirm changes</button>
             </div>
             </div>
+            {isDeletePasswordDialogOpen && <DeletePasswordDialog site={siteName} setIsDeletePasswordDialogOpen={setIsDeletePasswordDialogOpen} deleteDialogRef={deleteDialogRef} isLoading={isLoading} handleEntryDelete={handleEntryDelete} />}
         </div>
      );
 }
