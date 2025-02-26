@@ -36,7 +36,7 @@ const Home = () => {
             <div className='header'>
                 <p>Welcome back,</p>
                 <img src={userPic} />
-                <h1>{user?.displayName || userData?.name || "Figerland shanks"}</h1>
+                <h1 className={(user?.displayName?.length>10 || userData?.name?.length>10) && `small`}>{user?.displayName || userData?.name || "Figerland shanks"}</h1>
             </div>
             <div className='main'>
                 <div className='parent'>
