@@ -6,14 +6,14 @@ import AddPasswordDialog from '../../components/add-password-dialog/add-password
 import AsyncLoader from '../../components/async-loader/async-loader.component';
 import { FaChevronRight,FaStar } from "react-icons/fa6";
 import { RiAiGenerate,RiLockPasswordLine } from "react-icons/ri";
-import { MdOutlineAssessment } from "react-icons/md";
+import { MdOutlineAssessment,MdOutlinePublic } from "react-icons/md";
 import { CgDatabase } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { FaThList } from "react-icons/fa";
 
 
-const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords'];
-const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase];
+const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords','Public information'];
+const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase,MdOutlinePublic];
 const stateText={
     "loading":"Getting things ready",
     "error":"Error occured! Try again later",
@@ -70,7 +70,7 @@ const Home = () => {
                 </div>
                 <div className='blocks'>
                 {iconArray.map((Icon,index)=>{
-                    return <div key={`app-tile-spm-${index}`} className='bs' onClick={()=>router(`${nameArray[index].replace(/\s/g,'-').toLowerCase()}`)}>
+                    return <div key={`app-tile-spm-${index}`} className={`bs app-tile-${index}`} onClick={()=>router(`${nameArray[index].replace(/\s/g,'-').toLowerCase()}`)}>
                         <div>
                             <Icon className='icon' />
                         </div>

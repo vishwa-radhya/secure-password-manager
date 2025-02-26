@@ -62,7 +62,7 @@ export const steps = [
     {
         title: "Security Timeouts",
         icon: FiRefreshCw,
-        description: "Your encryption key is automatically cleared after 5 minutes of inactivity.",
+        description: "Your encryption key is automatically cleared after 7 minutes of inactivity.",
         detail: "You can also manually lock your vault at any time for immediate security. After a timeout, you'll need to enter your master password again to view any passwords."
     },
     {

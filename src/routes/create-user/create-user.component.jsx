@@ -85,13 +85,12 @@ const CreateUser = () => {
         <div className='create-user-div'>
             <div className='i-space c-i-space'>
                 <div>
-                    <img src={AppIcon} />
+                    <img src={AppIcon} onClick={()=>router('/')} />
                     <span>Secure Password manager</span>
                 </div>
                 <div>
-                    <p>Get </p>
-                    <p>Everything</p>
-                    <p>You Want</p>
+                <p className='big-p'>Securely,</p>
+                    <p>store and manage your passwords.</p>
                 </div>
             </div>
             <div className='main c-i-main'>

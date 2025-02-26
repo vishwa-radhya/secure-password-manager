@@ -14,15 +14,15 @@ createRoot(document.getElementById('root')).render(
   <UserAuthProvider>
   <GlobalUserDataProvider>
   <GlobalDataProvider>
-  <KeyGenerationProvider>
   <ToastProvider>
+  <KeyGenerationProvider>
   <BrowserRouter>
   <StrictMode>
     <App />
   </StrictMode>
   </BrowserRouter>
-  </ToastProvider>
   </KeyGenerationProvider>
+  </ToastProvider>
   </GlobalDataProvider>
   </GlobalUserDataProvider>
   </UserAuthProvider>,

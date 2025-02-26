@@ -51,7 +51,7 @@ const AllPasswords = () => {
             </div>
             <div className='main'>
                 {filteredPasswords.map((d)=>{
-                    return <PasswordTile d={d} tileKey={d.key} key={d.key} /> 
+                    return <PasswordTile d={d}  key={d.key} /> 
                 })}
             </div>
         </div>

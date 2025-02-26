@@ -77,7 +77,7 @@ function App() {
           <Route path="user" element={<User/>} />
           <Route path="password-health" element={<PasswordHealth/>} />
           <Route path="all-passwords" element={<AllPasswords/>} />
-          <Route path="info-docs" element={<InfoDocs/>} />
+          <Route path="public-information" element={<InfoDocs/>} />
           <Route path="password-entry/:key" element={<PasswordEntry/>} />
         </Route>
 

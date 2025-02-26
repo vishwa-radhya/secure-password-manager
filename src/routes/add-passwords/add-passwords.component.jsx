@@ -128,7 +128,7 @@ const AddPasswords = () => {
                     <h2>Password security</h2>
                     <p>Learn how your passwords are securely stored at rest and transit</p>
                     <p>See what process is used in maintaing the integrity of your passwords</p>
-                    <button className='c-btn' onClick={()=>router('/dashboard/info-docs')}>Public info</button>
+                    <button className='c-btn' onClick={()=>router('/dashboard/public-information')}>Public info</button>
                 </div>
                 </div>
             </div>

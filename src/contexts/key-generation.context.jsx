@@ -1,10 +1,15 @@
 import PropTypes from "prop-types";
 import { createContext, useCallback, useContext, useState } from "react";
+import { useUserAuthContext } from "./user-auth.context";
+import { useToast } from "./toast-context.context";
 
 const KeyGenerationContext=createContext();
 export const KeyGenerationProvider=({children})=>{
 
     const [userKeys,setUserKeys]=useState(null);
+    const {handleSetIsAuthenticatedWithPassword}=useUserAuthContext();
+    const {showToast}=useToast();
+
 
     const generateKeysFromPassword = useCallback((password,salt)=>{
         return new Promise((resolve,reject)=>{
@@ -20,6 +25,11 @@ export const KeyGenerationProvider=({children})=>{
                         userAes256Key:event.data.aes256Key
                     })
                     resolve(event.data);
+                    setTimeout(()=>{
+                        setUserKeys(null);
+                        handleSetIsAuthenticatedWithPassword(false)
+                        showToast("security reset")
+                    },420000)
                 }
                 worker.terminate();
             }

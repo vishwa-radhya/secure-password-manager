@@ -80,13 +80,11 @@ const Auth = () => {
         <div className='auth-div'>
             <div className='i-space c-i-space'>
                 <div>
-                <img src={AppIcon} />
+                <img src={AppIcon} onClick={()=>router('/')} />
                 <span>Secure Password manager</span>
                 </div>
             <div>
-                <p>One</p>
-                <p>Thirteen</p>
-                <p>Nineteen Nine</p>
+                <p className='big-p'>Welcome back!</p><p>secure access to your passwords, only for you.</p>
             </div>
             </div>
             <div className='main c-i-main'>

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import { BiHealth } from "react-icons/bi";
 
 const navIcons=[RiKeyFill,BiHealth,RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase,MdOutlinePublic];
-const nameArray=['All passwords','Password Health','Generate passwords','Check password strength','Access Methods','Add passwords','Info docs'];
+const nameArray=['All passwords','Password Health','Generate passwords','Check password strength','Access Methods','Add passwords','Public information'];
 
 
 const Menubar = () => {

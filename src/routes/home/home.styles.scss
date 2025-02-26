@@ -123,6 +123,9 @@
                 .angle{
                     background-color: ghostwhite;
                 }
+                .app-tile-4{
+                    display: none;
+                }
             }
         }
         .bs{
@@ -169,6 +172,11 @@
                         }
                     }
                 }
+               .blocks{
+                .app-tile-4{
+                    display:flex;
+                }
+               }
             }
         }
     }
