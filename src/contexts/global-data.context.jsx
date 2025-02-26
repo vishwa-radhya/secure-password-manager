@@ -17,6 +17,7 @@ export const GlobalDataProvider=({children})=>{
     useEffect(()=>{
         if(!user) return;
         setPasswordsState('loading')
+        setGlobalPasswordData([]);
         const passwordsDataRef = ref(realtimeDb,`userPasswords/${user.uid}`);
 
         const handlePasswordsAdd=(snapshot)=>{
