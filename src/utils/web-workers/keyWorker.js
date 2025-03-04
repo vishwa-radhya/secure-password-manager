@@ -12,7 +12,6 @@ self.onmessage=async(event)=>{
         // const iterations = navigator.hardwareConcurrency > 4 ? 200000 : 100000;
         const iterations = 125000;
 
-        //Generate AES-128 Key
         const aes128Key = await crypto.subtle.deriveKey(
             {
                 name:"PBKDF2",
@@ -26,7 +25,6 @@ self.onmessage=async(event)=>{
             ["encrypt","decrypt"]
         );
 
-        //Generate AES-256 Key
         const aes256Key = await crypto.subtle.deriveKey(
             {
                 name: "PBKDF2",

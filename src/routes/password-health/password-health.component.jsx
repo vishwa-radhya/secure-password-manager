@@ -10,6 +10,7 @@ import ProgressLoader from '../../components/progress-loader/progress-loader.com
 import zxcvbn from 'zxcvbn';
 import { handleKeySelectionAndDecryptionProcess } from '../../utils/helpers/globalFunctions';
 import { statusCodeName,statusColors } from '../../utils/helpers/helpers';
+import { useToast } from '../../contexts/toast-context.context';
 import { useState } from 'react';
 
 
@@ -18,6 +19,7 @@ const PasswordHealth = () => {
     const {globalPasswordData,handleSetAnalysisData,analysisData}=useGlobalDataContext();
     const [state,setState]=useState('');
     const {userKeys}=useKeyGenerationContext();
+    const {showToast}=useToast();
 
     if(!isAuthenticatedWithPassword){
         return <AuthenticationForm />
@@ -29,7 +31,8 @@ const PasswordHealth = () => {
 
 
     const handlePasswordHealthGeneration=async()=>{
-        if(!globalPasswordData || !userKeys){
+        if(!globalPasswordData.length || !userKeys){
+            showToast('Nothing yet!')
             return;
         }
         try{
