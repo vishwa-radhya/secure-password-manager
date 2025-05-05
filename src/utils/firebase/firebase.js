@@ -42,7 +42,8 @@ export const signInWithGooglePopup =async()=>{
                 favouritesCount:0,
                 isAccessMethodsConfigured:false,
                 hasMasterPassword:false,
-                salt:salt
+                salt:salt,
+                subscriptionPlan:'free'
             })
             return true;
         }
@@ -72,6 +73,7 @@ export const createUserFromEmailAndPassword =async(email,password,name)=>{
           isAccessMethodsConfigured:false,
           hasMasterPassword:true,
           salt:salt,
+          subscriptionPlan:'free'
       })
   }catch(e){
       if (e.code === 'auth/email-already-in-use') {

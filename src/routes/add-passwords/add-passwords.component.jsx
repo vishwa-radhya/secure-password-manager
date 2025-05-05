@@ -49,13 +49,28 @@ const AddPasswords = () => {
         await update(ref(realtimeDb),updates);
     }
 
+    const handlePasswordLimits=()=>{
+        const totalUserPasswords=userData?.passwordsCount;
+        if(totalUserPasswords || totalUserPasswords===0){
+            if(userData?.subscriptionPlan==='free'){
+                return totalUserPasswords < 20;
+            }else{
+                return true;
+            }
+        }else{
+            return false;
+        }
+    }
+
     const handleSubmit=async(event)=>{
         event.preventDefault();
         if(!userKeys){
             handleSetIsAuthenticatedWithPassword(false);
             return;
         }
-        setIsProcessLoading(true);
+        const isPasswordAdditionAllowed=handlePasswordLimits();
+        if(isPasswordAdditionAllowed){
+            setIsProcessLoading(true);
         try{
             const {iv,cipherText}=await handleKeySelectionAndEncryptionProcess(userKeys,encryptionMethod,inputPassword);
             const encryptedPasswordData={
@@ -76,6 +91,9 @@ const AddPasswords = () => {
             resetFields()
             setIsProcessLoading(false);
             showToast("Error occured please try again!")
+        }
+        }else{
+            showToast("Maximum Password Limit")
         }
     }
 

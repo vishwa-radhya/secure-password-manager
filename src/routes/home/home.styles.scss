@@ -18,16 +18,17 @@
             display: flex;
             flex-direction: column;
             align-items:center;
-            justify-content:center ;
+            justify-content:center;
             gap: 30px;
             min-width: 350px;
             max-width: 500px;
             padding: 30px;
             border-radius: 20px;
-            border: 1px solid;
             background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
             color: ghostwhite;
             overflow: hidden;
+            margin: 0 auto;
+            position: relative;
             p{
                 width: 100%;
                 font-size: 1.2rem;
@@ -37,6 +38,15 @@
             }
             .small{
                 font-size: 0.9rem;
+            }
+            .user-type{
+                position: absolute;
+                min-width: 25px;
+                min-height: 25px;
+                top: 5px;
+                right: 5px;
+                @include mixins.flex-cc();
+                border-radius: 50%;
             }
         }
         .main{

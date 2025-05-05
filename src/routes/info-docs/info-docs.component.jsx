@@ -1,20 +1,22 @@
-import { useState,createElement } from 'react';
+import { createElement } from 'react';
 import './info-docs.styles.scss';
 import { steps } from '../../utils/helpers/helpers';
+import { useDocsContext } from '../../contexts/docs.context';
 
 const classNames=['blue','purple','green','red','yellow','orange','indigo'];
 const InfoDocs = () => {
 
-    const [activeStep,setActiveStep]=useState(0);
+    // const [activeStep,setActiveStep]=useState(0);
+    const {activeStep,handleSetActiveStep}=useDocsContext();
 
       const handleNext = () => {
         if (activeStep < steps.length - 1) {
-          setActiveStep(activeStep + 1);
+          handleSetActiveStep(activeStep + 1);
         }
       };
       const handlePrev = () => {
         if (activeStep > 0) {
-          setActiveStep(activeStep - 1);
+          handleSetActiveStep(activeStep - 1);
         }
       };
 
@@ -27,7 +29,7 @@ const InfoDocs = () => {
               {steps.map((_, index) => (
                 <button 
                   key={index} 
-                  onClick={() => setActiveStep(index)}
+                  onClick={() => handleSetActiveStep(index)}
                   className={`progress-step ${
                     index === activeStep 
                       ? 'active' 

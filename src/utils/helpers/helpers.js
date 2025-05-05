@@ -1,6 +1,11 @@
 import { FaLock,FaKey,FaDatabase,FaShield,FaUser,FaEye, } from 'react-icons/fa6';
 import { FiRefreshCw } from "react-icons/fi";
 export const separatorArray=['!','@','#','$','%','^','&','*','-',')','(','+','_','.','/'];
+export const userTypeIndicatorsPlaceholdersColors={
+    free:'lightgray',
+    premium:'rgb(244, 228, 47)',
+    enterprise:'rgb(244, 162, 47)'
+}
 export const baseInfo={
     Password:"None",
     Guesses:"None",

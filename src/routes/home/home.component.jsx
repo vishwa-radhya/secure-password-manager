@@ -10,10 +10,15 @@ import { MdOutlineAssessment,MdOutlinePublic } from "react-icons/md";
 import { CgDatabase } from "react-icons/cg";
 import { useNavigate } from 'react-router-dom';
 import { FaThList } from "react-icons/fa";
-
+import { userTypeIndicatorsPlaceholdersColors } from '../../utils/helpers/helpers';
 
 const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords','Public information'];
 const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase,MdOutlinePublic];
+const userTypeIndicatorsPlaceholdersObject={
+    free:'F',
+    premium:'P',
+    enterprise:'E'
+}
 const stateText={
     "loading":"Getting things ready",
     "error":"Error occured! Try again later",
@@ -24,17 +29,19 @@ const Home = () => {
     const {user,isNewGoogleAuthUser}=useUserAuthContext(); 
     const {userData,userDataState}=useGlobalUserDataContext();
     const router = useNavigate();
-  
 
     if(userDataState === "loading" || userDataState === "empty" || userDataState === "error"){
             return <AsyncLoader text={stateText[userDataState]} ls={"70px"} type={userDataState} />
         }
-
+       
     return ( 
         <div className='home-div'>
         <div className='container'>
             <div className='header'>
                 <p>Welcome back,</p>
+                <div className='user-type' style={{color:userTypeIndicatorsPlaceholdersColors[userData?.subscriptionPlan ?? 'free']}}>
+                    {userTypeIndicatorsPlaceholdersObject[userData?.subscriptionPlan ?? 'free']}
+                </div>
                 <img src={userPic} />
                 <h1 className={(user?.displayName?.length>10 || userData?.name?.length>10) && `small`}>{user?.displayName || userData?.name || "Figerland shanks"}</h1>
             </div>

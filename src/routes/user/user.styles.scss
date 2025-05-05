@@ -22,10 +22,27 @@
             font-size: 1.5rem;
             font-weight: 600;
             text-align: center;
+            word-break: break-all;
         }
         button{
             font-size: 1.3rem;
             padding: 5px 30px;
+        }
+        .lock-app-div{
+            display: flex;
+            gap: 10px;
+            .lock-app{
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            .info{
+                @include mixins.flex-cc();
+                cursor: pointer;
+                svg{
+                    font-size: 2.5rem;
+                }
+            }
         }
     }
 }

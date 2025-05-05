@@ -9,7 +9,7 @@ export const KeyGenerationProvider=({children})=>{
     const [userKeys,setUserKeys]=useState(null);
     const {handleSetIsAuthenticatedWithPassword}=useUserAuthContext();
     const {showToast}=useToast();
-
+    const handleSetUserKeys=(val)=>setUserKeys(val)
 
     const generateKeysFromPassword = useCallback((password,salt)=>{
         return new Promise((resolve,reject)=>{
@@ -43,7 +43,8 @@ export const KeyGenerationProvider=({children})=>{
     return(
         <KeyGenerationContext.Provider value={{
             userKeys,
-            generateKeysFromPassword
+            generateKeysFromPassword,
+            handleSetUserKeys
         }}>
             {children}
         </KeyGenerationContext.Provider>

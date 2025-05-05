@@ -9,6 +9,7 @@ import { ToastProvider } from './contexts/toast-context.context.jsx'
 import { GlobalDataProvider } from './contexts/global-data.context.jsx'
 import { GlobalUserDataProvider } from './contexts/global-user-data.context.jsx'
 import { KeyGenerationProvider } from './contexts/key-generation.context.jsx'
+import { DocsProvider } from './contexts/docs.context.jsx'
 
 createRoot(document.getElementById('root')).render(
   <UserAuthProvider>
@@ -16,11 +17,13 @@ createRoot(document.getElementById('root')).render(
   <GlobalDataProvider>
   <ToastProvider>
   <KeyGenerationProvider>
+  <DocsProvider>
   <BrowserRouter>
   <StrictMode>
     <App />
   </StrictMode>
   </BrowserRouter>
+  </DocsProvider>
   </KeyGenerationProvider>
   </ToastProvider>
   </GlobalDataProvider>
