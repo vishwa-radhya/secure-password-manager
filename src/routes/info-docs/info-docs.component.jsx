@@ -1,4 +1,4 @@
-import { createElement } from 'react';
+import { createElement, useEffect } from 'react';
 import './info-docs.styles.scss';
 import { steps } from '../../utils/helpers/helpers';
 import { useDocsContext } from '../../contexts/docs.context';
@@ -19,6 +19,10 @@ const InfoDocs = () => {
           handleSetActiveStep(activeStep - 1);
         }
       };
+
+      useEffect(()=>{
+        handleSetActiveStep(0)
+      },[])
 
       return (
         <div className="info-docs-div">

@@ -14,6 +14,7 @@ import { ref,  update } from 'firebase/database';
 import { realtimeDb } from '../../utils/firebase/firebase';
 import { useNavigate } from 'react-router-dom';
 import DeletePasswordDialog from '../../components/delete-password-dialog/delete-password-dialog.component';
+import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
 
 const PasswordEntry = () => {
     const {key}=useParams();
@@ -25,7 +26,7 @@ const PasswordEntry = () => {
     const {showToast}=useToast();
     const {userData}=useGlobalUserDataContext();
     const {userKeys}=useKeyGenerationContext();
-    const {user}=useUserAuthContext();
+    const {user,isAuthenticatedWithPassword}=useUserAuthContext();
     const [siteName,setSiteName]=useState('');
     const [username,setUserName]=useState('');
     const [initialPassword,setInitialPassword]=useState('');
@@ -134,6 +135,10 @@ const PasswordEntry = () => {
             return ()=>document.removeEventListener('click',handleClickOutside);
         }
       },[isDeletePasswordDialogOpen])
+
+      if(!isAuthenticatedWithPassword){
+        return <AuthenticationForm />
+    }
 
     return ( 
         <div className='password-entry-div'>
