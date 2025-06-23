@@ -1,8 +1,6 @@
 import './add-passwords.styles.scss'
-import PasswordCheck from '../../components/password-check/password-check.component';
 import SubmitButton from '../../components/submit-button/submit-button.component';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useUserAuthContext } from '../../contexts/user-auth.context';
 import { useToast } from '../../contexts/toast-context.context';
 import { useKeyGenerationContext } from '../../contexts/key-generation.context';
@@ -13,6 +11,7 @@ import { ref,push, update } from 'firebase/database';
 import AuthenticationForm from '../../components/authentication-form/authentication-form.component';
 import RadioButton from '../../components/radio-button/radio-button.component';
 import { FaBullseye } from "react-icons/fa";
+import PasswordCheckList from '../../components/password-checklist/password-checklist.component';
 
 const AddPasswords = () => {
 
@@ -26,9 +25,7 @@ const AddPasswords = () => {
         const {isAuthenticatedWithPassword,handleSetIsAuthenticatedWithPassword,user}=useUserAuthContext();
         const {userKeys}=useKeyGenerationContext();
         const {userData}=useGlobalUserDataContext();
-        const {showToast}=useToast();
-        const router = useNavigate();
-        
+        const {showToast}=useToast();        
     
     const resetFields=()=>{
         setInputSite("");
@@ -72,7 +69,7 @@ const AddPasswords = () => {
         if(isPasswordAdditionAllowed){
             setIsProcessLoading(true);
         try{
-            const {iv,cipherText}=await handleKeySelectionAndEncryptionProcess(userKeys,encryptionMethod,inputPassword);
+            const {iv,cipherText}=await handleKeySelectionAndEncryptionProcess(userKeys,encryptionMethod,inputPassword.trim());
             const encryptedPasswordData={
                 inputSite,
                 inputUsername,
@@ -140,15 +137,7 @@ const AddPasswords = () => {
                         </div>
                     </div>
                 </div>
-                <div className='advisor'>
-                    <PasswordCheck password={inputPassword} />
-                <div className='info'>
-                    <h2>Password security</h2>
-                    <p>Learn how your passwords are securely stored at rest and transit</p>
-                    <p>See what process is used in maintaing the integrity of your passwords</p>
-                    <button className='c-btn' onClick={()=>router('/dashboard/public-information')}>Public info</button>
-                </div>
-                </div>
+                <PasswordCheckList inputPassword={inputPassword} backgroundImageColor={'linear-gradient(to top, #30cfd0 0%, #330867 100%)'} />
             </div>
         </div>
      );

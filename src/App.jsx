@@ -16,9 +16,10 @@ import AuthLoader from './components/auth-loader/auth-loader.component';
 import GeneratePasswords from './routes/generate-passwords/generate-passwords.component';
 import CheckPasswordStrength from './routes/check-password-strength/check-password-strength.component';
 import AddPasswords from './routes/add-passwords/add-passwords.component';
-import AccessMethods from './routes/access-methods/access-methods.component';
+import SecuritySettings from "./routes/security-settings/security-settings.component";
 import InfoDocs from "./routes/info-docs/info-docs.component";
 import PasswordEntry from "./routes/password-entry/password-entry.component";
+import ChangeMasterPassword from "./routes/change-master-password/change-master-password.component";
 
 
 const ProtectedRoute = ({ children }) => {
@@ -72,13 +73,14 @@ function App() {
           <Route index element={<Home />} />
           <Route path="generate-passwords" element={<GeneratePasswords/>} />
           <Route path="check-password-strength" element={<CheckPasswordStrength/>} />
-          <Route path="access-methods" element={<AccessMethods/>} />
+          <Route path="security-settings" element={<SecuritySettings/>} />
           <Route path="add-passwords" element={<AddPasswords/>} />
           <Route path="user" element={<User/>} />
           <Route path="password-health" element={<PasswordHealth/>} />
           <Route path="all-passwords" element={<AllPasswords/>} />
           <Route path="public-information" element={<InfoDocs/>} />
           <Route path="password-entry/:key" element={<PasswordEntry/>} />
+          <Route path="change-master-password" element={<ChangeMasterPassword/>} />
         </Route>
 
         <Route path="/auth" element={

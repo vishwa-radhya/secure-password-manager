@@ -1,10 +1,10 @@
 import './password-check.styles.scss';
 import { passwordCheckList,defaultChecklist,passwordCriteriaArray } from '../../utils/helpers/helpers';
-import { FaRegCircleDot,FaCheck,FaCircleCheck } from "react-icons/fa6";
+import { FaRegCircleDot,FaCheck } from "react-icons/fa6";
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 
-const PasswordCheck = ({password}) => {
+const PasswordCheck = ({password=''}) => {
 
     const [checkListStates,setCheckListStates]=useState(defaultChecklist);
 

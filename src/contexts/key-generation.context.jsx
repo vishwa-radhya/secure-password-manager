@@ -9,6 +9,7 @@ export const KeyGenerationProvider=({children})=>{
     const [userKeys,setUserKeys]=useState(null);
     const {handleSetIsAuthenticatedWithPassword}=useUserAuthContext();
     const {showToast}=useToast();
+    const [timeoutId,setTimeoutId]=useState(null);
     const handleSetUserKeys=(val)=>setUserKeys(val)
 
     const generateKeysFromPassword = useCallback((password,salt)=>{
@@ -20,16 +21,24 @@ export const KeyGenerationProvider=({children})=>{
                 if(event.data.error){
                     reject(event.data.error);
                 }else{
-                    setUserKeys({
-                        userAes128Key:event.data.aes128Key,
-                        userAes256Key:event.data.aes256Key
-                    })
-                    resolve(event.data);
-                    setTimeout(()=>{
+                    const timeout =setTimeout(()=>{
                         setUserKeys(null);
                         handleSetIsAuthenticatedWithPassword(false)
                         showToast("security reset")
                     },420000)
+                    setTimeoutId(timeout);
+                    setUserKeys({
+                        userAes128Key:event.data.aes128Key,
+                        userAes256Key:event.data.aes256Key
+                    })
+                    resolve({
+                        aes128Key:event.data.aes128Key,
+                        aes256Key:event.data.aes256Key,
+                        cancelTimeout:()=>{
+                            clearTimeout(timeout);
+                            setTimeoutId(null);
+                        }
+                    });
                 }
                 worker.terminate();
             }

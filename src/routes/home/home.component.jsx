@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaThList } from "react-icons/fa";
 import { userTypeIndicatorsPlaceholdersColors } from '../../utils/helpers/helpers';
 
-const nameArray=['Generate passwords','Check password strength','Access Methods','Add passwords','Public information'];
+const nameArray=['Generate passwords','Check password strength','Security Settings','Add passwords','Public information'];
 const iconArray=[RiAiGenerate,MdOutlineAssessment,RiLockPasswordLine,CgDatabase,MdOutlinePublic];
 const userTypeIndicatorsPlaceholdersObject={
     free:'F',
